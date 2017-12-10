@@ -15,7 +15,10 @@ type Props = {
 	loading?: boolean,
 	refreshing?: boolean,
 	onRefresh?: () => void,
-	onEndReached?:() => void
+	onEndReached?:() => void,
+	onKittyLikePress?: (Kitty) => void,
+	onKittyUnLikePress?: (Kitty) => void,
+	onKittySharePress?: (Kitty) => void,
 }
 
 export default class KittyList extends React.Component<Props> {
@@ -46,6 +49,11 @@ export default class KittyList extends React.Component<Props> {
 			<KittyImage
 				url={info.item.url}
 				style={this.getListStyle(info.index)}
+				buttonsProps={{
+					onShareClick: () => this.props.onKittySharePress && this.props.onKittySharePress(info.item),
+					onLikeClick:  () => this.props.onKittyLikePress && this.props.onKittyLikePress(info.item),
+					onDislikeClick: () => this.props.onKittyUnLikePress && this.props.onKittyUnLikePress(info.item),
+				}}
 			/>
 		)
 	};

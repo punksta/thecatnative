@@ -1,25 +1,42 @@
+// @flow
+
 import * as React from "react"
-import ImageProgress, {createImageProgress} from 'react-native-image-progress';
+import {createImageProgress} from 'react-native-image-progress';
 import KittyLoader from "./KittyLoader";
 import {onlyUpdateForKeys} from "recompose"
 
 import FastImage from 'react-native-fast-image'
-import {View, Image} from "react-native";
+import {View, StyleSheet} from "react-native";
+import KittyButtons from "./KittyButtons";
 
-const Im = createImageProgress(FastImage)
+const ImageProgress = createImageProgress(FastImage)
 
-const KittyImage_ = ({url, style}) => {
-	return <View
-		style={style}
-	>
-		<FastImage
-			source={{ uri: url }}
-			resizeMode={'contain'}
+const KittyImage_ = ({url, style, kittyLoader, buttonsProps}) => {
+	const ImageComponent = kittyLoader ? ImageProgress : FastImage;
+	return (
+		<View
 			style={style}
-		/>
-	</View>
-}
+		>
+			<ImageComponent
+				source={{uri: url}}
+				resizeMode={'contain'}
+				style={styles.container}
+				indicator={KittyLoader}
+			/>
+			<KittyButtons
+				{...buttonsProps}
+			/>
+		</View>
+	)
+};
 
-const hoc = onlyUpdateForKeys(['url', 'style'])
+const hoc = onlyUpdateForKeys(['url', 'style']);
 
-export const KittyImage = hoc(KittyImage_)
+export const KittyImage = hoc(KittyImage_);
+
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1
+	}
+});

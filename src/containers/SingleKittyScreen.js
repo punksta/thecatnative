@@ -42,10 +42,15 @@ class SingleKittyScreen_ extends Component<{}> {
 	render() {
 		return (
 			<View style={styles.container}>
-
 				{this.state.kitty && <KittyImage
+					kittyLoader
 					style={styles.kittyStyle}
 					url={this.state.kitty.url}
+					buttonsProps={{
+						onShareClick: this.shareKitty,
+						onLikeClick: () => {},
+						onDislikeClick: () => {},
+					}}
 				/>}
 
 				<TouchableOpacity
@@ -57,21 +62,6 @@ class SingleKittyScreen_ extends Component<{}> {
 						Next
 					</Text>
 				</TouchableOpacity>
-
-
-				{this.state.kitty && <TouchableOpacity
-					style={styles.shareKitty}
-					onPress={this.shareKitty}>
-					<Image
-						style={{
-							width: 40,
-							height: 40
-						}}
-						resizeMode={'contain'}
-						source={require("../assets/img/share_icon.png")}
-					/>
-				</TouchableOpacity>
-				}
 			</View>
 		);
 	}

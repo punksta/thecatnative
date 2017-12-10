@@ -30,10 +30,9 @@ export default class KittyLoader extends Component {
 
 
 	render() {
-		if (this.props.progress > 0.9) {
+		if (this.props.progress > 0.8) {
 			return null;
 		}
-
 		const spin = this.animationValue.interpolate({
 			inputRange: [0, 1],
 			outputRange: ['0deg', '1080deg']
@@ -42,8 +41,8 @@ export default class KittyLoader extends Component {
 		return (
 			<Animated.Image
 				style={{
-					width: 60,
-					height: 60,
+					width: 30,
+					height: 30,
 					transform: [{rotate: spin}]
 				}}
 				resizeMode={'contain'}

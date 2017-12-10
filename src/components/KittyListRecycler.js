@@ -3,10 +3,10 @@ import * as React from "react"
 import {VirtualizedList, Dimensions, StyleSheet, Image, View, ActivityIndicator, RefreshControl} from "react-native"
 
 import {KittyImage} from "./KittyImage"
-import {List, is } from "immutable"
+import {List, is} from "immutable"
 import type {Kitty} from "../api/types";
 import KittyLoader from "./KittyLoader";
-import { RecyclerListView, DataProvider, LayoutProvider } from "recyclerlistview";
+import {RecyclerListView, DataProvider, LayoutProvider} from "recyclerlistview";
 
 
 const dataProvider = new DataProvider((r1: Kitty, r2: Kitty) => {
@@ -40,7 +40,10 @@ type Props = {
 	loading?: boolean,
 	refreshing?: boolean,
 	onRefresh?: () => void,
-	onEndReached?:() => void
+	onEndReached?: () => void,
+	onKittyLikePress?: (Kitty) => void,
+	onKittyUnLikePress?: (Kitty) => void,
+	onKittySharePress?: (Kitty) => void,
 }
 
 type State = {
@@ -64,10 +67,10 @@ export default class KittyList extends React.Component<Props, State> {
 		return data.size;
 	};
 
-
+	//Given type and data return the view component
 	_rowRenderer = (type, item: Kitty) => {
 		//You can return any view here, CellContainer has no special significance
-		switch(type) {
+		switch (type) {
 			case 0:
 				return this.renderItem(item, this.props.kittyStyle);
 			case 1:
@@ -77,8 +80,8 @@ export default class KittyList extends React.Component<Props, State> {
 		}
 	}
 
-	componentWillReceiveProps(props : Props) {
-		if(!is(this.props.kitties, props.kitties)) {
+	componentWillReceiveProps(props: Props) {
+		if (!is(this.props.kitties, props.kitties)) {
 			this.setState({
 				dataProvider: this.state.dataProvider.cloneWithRows(props.kitties.toArray())
 			})
@@ -87,10 +90,17 @@ export default class KittyList extends React.Component<Props, State> {
 
 
 	renderItem = (item: Kitty, style: *) => {
-		return	(
+		const buttonProps = {
+			onShareClick: () => this.props.onKittySharePress && this.props.onKittySharePress(item),
+			onLikeClick: () => this.props.onKittyLikePress && this.props.onKittyLikePress(item),
+			onDislikeClick: () => this.props.onKittyUnLikePress && this.props.onKittyUnLikePress(item)
+		};
+
+		return (
 			<KittyImage
 				url={item.url}
 				style={style}
+				buttonsProps={buttonProps}
 			/>
 		)
 	};
@@ -114,7 +124,7 @@ export default class KittyList extends React.Component<Props, State> {
 			>
 				<KittyLoader/>
 				<View
-					style={{flex:0.3}}
+					style={{flex: 1/3}}
 				/>
 				<KittyLoader/>
 
@@ -123,17 +133,17 @@ export default class KittyList extends React.Component<Props, State> {
 	};
 
 	refreshControl = () => {
-		return <RefreshControl
+		return (<RefreshControl
 			refreshing={this.props.refreshing || false}
 			onRefresh={this.props.onRefresh}
-		/>
-	};
+		/>)
+	}
 
 	render() {
 
 		return (
 			<RecyclerListView
-				refreshControl={this.refreshControl}
+				refreshControl={this.refreshControl()}
 				layoutProvider={layoutProvider}
 				dataProvider={this.state.dataProvider}
 				rowRenderer={this._rowRenderer}
