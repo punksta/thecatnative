@@ -153,6 +153,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fast-image')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:25.0.0"
     compile "com.facebook.react:react-native:0.51.0"

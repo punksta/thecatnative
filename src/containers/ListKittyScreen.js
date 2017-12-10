@@ -5,6 +5,7 @@ import KittyList from "../components/KittyList";
 import Api from "../api";
 import withActiveRoute from "../navigation/withActiveRoute";
 import {connect} from "react-redux";
+import KittyListRecycler from "../components/KittyListRecycler";
 
 
 class ListKittyScreen_ extends React.Component {
@@ -26,7 +27,7 @@ class ListKittyScreen_ extends React.Component {
 		const refreshing = loadingState === "refreshing" && !loading
 
 		return (
-			<KittyList
+			<KittyListRecycler
 				kitties={data}
 				listStyle={styles.list}
 				kittyStyle={styles.image}
