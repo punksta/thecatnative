@@ -107,6 +107,15 @@ const layoutProvider = new LayoutProvider(
 	}
 );
 
+export interface ScrollEvent {
+	nativeEvent: {
+		contentOffset: {
+			x: number,
+			y: number
+		}
+	};
+}
+
 type Props = {
 	kitties: List<Kitty>,
 	listStyle: *,
@@ -120,7 +129,8 @@ type Props = {
 	renderHeader: ({}) => {},
 	onKittyLikePress?: Kitty => void,
 	onKittyUnLikePress?: Kitty => void,
-	onKittySharePress?: Kitty => void
+	onKittySharePress?: Kitty => void,
+	onScroll?: (rawEvent: ScrollEvent, offsetX: number, offsetY: number) => void
 };
 
 type State = {
@@ -142,6 +152,10 @@ export default class KittyList extends React.Component<Props, State> {
 
 	getItemCountList = (data: List<*>) => {
 		return data.size;
+	};
+
+	scrollToTop = (animate: boolean) => {
+		this.refs["list"] && this.refs["list"].scrollToTop(animate);
 	};
 
 	//Given type and data return the view component
@@ -226,6 +240,7 @@ export default class KittyList extends React.Component<Props, State> {
 	render() {
 		return (
 			<RecyclerListView
+				ref={"list"}
 				refreshControl={this.refreshControl()}
 				layoutProvider={layoutProvider}
 				dataProvider={this.state.dataProvider}
@@ -234,6 +249,7 @@ export default class KittyList extends React.Component<Props, State> {
 				style={this.props.listStyle}
 				keyExtractor={this.keyExtractor}
 				renderFooter={this.renderFooter}
+				onScroll={this.props.onScroll}
 				onEndReachedThreshold={0.7}
 				onEndReached={this.props.onEndReached}
 			/>
