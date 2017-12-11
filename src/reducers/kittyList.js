@@ -4,18 +4,28 @@ import type {Kitty} from "../api/types";
 import {List, Set} from "immutable";
 import type {KittyListActions} from "../actions";
 
-type State = {
+export type ListSettings = {
+	type: "gif" | "img"
+};
+
+export const defaultSettings = {
+	type: "gif"
+};
+
+export type State = {
 	data: List<Kitty>,
 	ids: Set<string>,
 	loadingState: "refreshing" | "loading" | "idle",
-	meeeooow: ?string
+	meeeooow: ?string,
+	settings: ListSettings
 };
 
 const initialState: State = {
 	data: List(),
 	ids: Set(),
 	loadingState: "idle",
-	meeeooow: null
+	meeeooow: null,
+	settings: defaultSettings
 };
 
 export default (
@@ -23,6 +33,9 @@ export default (
 	action: KittyListActions
 ): State => {
 	switch (action.type) {
+		case "KITTY_LIST_SETTINGS_CHANGED":
+			return {...state, settings: action.settings};
+
 		case "KITTY_LIST_REQUEST":
 			return {...state, meeeooow: null};
 
@@ -38,7 +51,8 @@ export default (
 					loadingState: "idle",
 					data: List(action.data),
 					ids: Set(action.data.map(item => item.id)),
-					meeeooow: null
+					meeeooow: null,
+					settings: state.settings
 				};
 			} else {
 				const itemsToAdd = action.data.filter(item => !state.ids.has(item.id));
@@ -46,7 +60,8 @@ export default (
 					loadingState: "idle",
 					data: state.data.concat(itemsToAdd),
 					ids: state.ids.merge(itemsToAdd.map(item => item.id)),
-					meeeooow: null
+					meeeooow: null,
+					settings: state.settings
 				};
 			}
 		case "KITTY_LIST_FAILURE":

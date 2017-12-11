@@ -1,9 +1,11 @@
 import * as React from "react";
-import {Share, StyleSheet, Dimensions, Image} from "react-native";
+import {Share, StyleSheet, Dimensions, Image, View} from "react-native";
 import withActiveRoute from "../navigation/withActiveRoute";
 import {connect} from "react-redux";
 import KittyListRecycler from "../components/KittyListRecycler";
 import type {Kitty} from "../api/types";
+import ListSettingsView from "../components/ListSettingsView";
+import type {ListSettings} from "../reducers/kittyList";
 
 class ListKittyScreen_ extends React.Component {
 	constructor(props) {
@@ -31,17 +33,24 @@ class ListKittyScreen_ extends React.Component {
 		const refreshing = loadingState === "refreshing" && !loading;
 
 		return (
-			<KittyListRecycler
-				kitties={data}
-				listStyle={styles.list}
-				kittyStyle={styles.image}
-				kittyStyle2={styles.image2}
-				onRefresh={this.props.onRefresh}
-				loading={loading}
-				refreshing={refreshing}
-				onEndReached={this.props.onLoadMore}
-				onKittySharePress={this.shareKitty}
-			/>
+			<View style={styles.flex1}>
+				<ListSettingsView
+					settings={this.props.kittyList.settings}
+					onSettingsChanged={this.props.onSettingsChanged}
+				/>
+
+				<KittyListRecycler
+					kitties={data}
+					listStyle={styles.flex1}
+					kittyStyle={styles.image}
+					kittyStyle2={styles.image2}
+					onRefresh={this.props.onRefresh}
+					loading={loading}
+					refreshing={refreshing}
+					onEndReached={this.props.onLoadMore}
+					onKittySharePress={this.shareKitty}
+				/>
+			</View>
 		);
 	}
 }
@@ -70,7 +79,9 @@ const mapToState = state => ({
 const dispatchToProps = dispatch => {
 	return {
 		onRefresh: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: true}),
-		onLoadMore: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: false})
+		onLoadMore: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: false}),
+		onSettingsChanged: (settings: ListSettings) =>
+			dispatch({type: "KITTY_LIST_SETTINGS_CHANGED", settings})
 	};
 };
 
@@ -85,7 +96,7 @@ const styles = StyleSheet.create({
 		width: 80,
 		height: 40
 	},
-	list: {
+	flex1: {
 		flex: 1
 	},
 	image: {

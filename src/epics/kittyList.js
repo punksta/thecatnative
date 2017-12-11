@@ -9,6 +9,8 @@ import "rxjs/add/operator/filter";
 import "rxjs/add/operator/mergeMap";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
+import "rxjs/add/operator/takeUntil";
+import "rxjs/add/operator/debounceTime";
 
 export const loadKittiesToList = (
 	actions: Observable<Action>,
@@ -40,7 +42,7 @@ export const loadKittiesToList = (
 			});
 
 			const requestAction = asObservable(
-				Api.fetchKitties_({count: 40, type: "gif"})
+				Api.fetchKitties_({count: 40, type: state().settings.type})
 			)
 				.map(data => ({type: "KITTY_LIST_SUCCESS", data, refresh}))
 				.catch(e =>
@@ -51,6 +53,26 @@ export const loadKittiesToList = (
 					})
 				);
 
-			return Observable.concat(loadingAction, requestAction);
+			return Observable.concat(loadingAction, requestAction).takeUntil(
+				actions.filter(a => {
+					return (
+						(a.type === "KITTY_LIST_REQUEST" && a.refresh) ||
+						a.type === "KITTY_LIST_SETTINGS_CHANGED"
+					);
+				})
+			);
 		});
+};
+
+export const refreshListOnSettingsChange = (
+	actions: Observable<Action>,
+	store: *
+): Observable<Action> => {
+	return actions
+		.ofType("KITTY_LIST_SETTINGS_CHANGED")
+		.debounceTime(300)
+		.map(a => ({
+			type: "KITTY_LIST_REQUEST",
+			refresh: true
+		}));
 };
