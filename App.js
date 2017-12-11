@@ -53,9 +53,13 @@ import rootEpic from "./src/epics"
 
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
+const middleWares = [epicMiddleware];
+if (__DEV__) {
+	middleWares.push(logger)
+}
 const store = createStore(
 	appReducer,
-	applyMiddleware(__DEV__? logger : undefined, epicMiddleware),
+	applyMiddleware(...middleWares),
 );
 
 export default class Root extends React.Component<{}> {
