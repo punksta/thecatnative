@@ -55,9 +55,7 @@ const epicMiddleware = createEpicMiddleware(rootEpic);
 
 const store = createStore(
 	appReducer,
-	applyMiddleware(logger),
-	applyMiddleware(epicMiddleware)
-
+	applyMiddleware(__DEV__? logger : undefined, epicMiddleware),
 );
 
 export default class Root extends React.Component<{}> {
