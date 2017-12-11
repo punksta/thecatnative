@@ -16,24 +16,93 @@ import type {Kitty} from "../api/types";
 import KittyLoader from "./KittyLoader";
 import {RecyclerListView, DataProvider, LayoutProvider} from "recyclerlistview";
 
-const dataProvider = new DataProvider((r1: Kitty, r2: Kitty) => {
-	return r1.id !== r2.id;
-});
+interface Header<T: {}> {
+	data: T;
+}
+
+class KittyDataProvider extends DataProvider {
+	_list: List<Kitty>;
+	_header: Header<*>;
+	_firstIndexToProcess: number;
+
+	constructor(list: List<Kitty>, headerData: {}) {
+		super((a1, a2) => {
+			if (a1.data || a2.data) {
+				return !is(a1.data, a2.data);
+			} else {
+				return !is(a1.id, a2.id);
+			}
+		});
+
+		this._header = {
+			data: headerData
+		};
+
+		this._firstIndexToProcess = 0;
+		this._list = list;
+	}
+
+	getDataForIndex(index: number): any {
+		return index === 0 ? this._header : this._list.get(index - 1);
+	}
+
+	getAllData(): any[] {
+		return [];
+	}
+
+	getFirstIndexToProcessInternal() {
+		return this._firstIndexToProcess;
+	}
+
+	getSize(): number {
+		return this._list.size + 1;
+	}
+
+	clone(list: List<Kitty>, headerData: {}): KittyDataProvider {
+		const dp = new KittyDataProvider(list, headerData);
+		const iterCount = Math.min(this.getSize(), dp.getSize());
+
+		let i = 0;
+		for (i = 0; i < iterCount; i++) {
+			if (this.rowHasChanged(this.getDataForIndex(i), dp.getDataForIndex(i))) {
+				break;
+			}
+		}
+		dp._firstIndexToProcess = i;
+		return dp;
+	}
+}
+
+const ViewTypes = {
+	HeaderItem: 0,
+	OddItem: 1,
+	NotOddItem: 2
+};
 
 const layoutProvider = new LayoutProvider(
 	index => {
-		const itemIsOdd = (index + 1) % 2 === 1;
-		if (itemIsOdd) {
-			return 0;
+		if (index === 0) {
+			return ViewTypes.HeaderItem;
 		} else {
-			return 1;
+			const itemIsOdd = (index + 1) % 2 === 1;
+			if (itemIsOdd) {
+				return ViewTypes.OddItem;
+			} else {
+				return ViewTypes.NotOddItem;
+			}
 		}
 	},
 	(type, dim) => {
 		switch (type) {
+			case ViewTypes.HeaderItem:
+				dim.width = Dimensions.get("window").width;
+				dim.height = 50;
+				return;
+
 			default:
 				dim.width = Dimensions.get("window").width;
 				dim.height = Dimensions.get("window").width;
+				return;
 		}
 	}
 );
@@ -47,20 +116,23 @@ type Props = {
 	refreshing?: boolean,
 	onRefresh?: () => void,
 	onEndReached?: () => void,
+	headerData: {},
+	renderHeader: ({}) => {},
 	onKittyLikePress?: Kitty => void,
 	onKittyUnLikePress?: Kitty => void,
 	onKittySharePress?: Kitty => void
 };
 
 type State = {
-	dataProvider: DataProvider
+	dataProvider: KittyDataProvider
 };
+
 export default class KittyList extends React.Component<Props, State> {
 	constructor(props: Props) {
 		super(props);
 
 		this.state = {
-			dataProvider: dataProvider.cloneWithRows(props.kitties.toArray())
+			dataProvider: new KittyDataProvider(props.kitties, props.headerData)
 		};
 	}
 
@@ -73,23 +145,32 @@ export default class KittyList extends React.Component<Props, State> {
 	};
 
 	//Given type and data return the view component
-	_rowRenderer = (type, item: Kitty) => {
+	_rowRenderer = (type, item: Kitty | Header<*>) => {
 		//You can return any view here, CellContainer has no special significance
 		switch (type) {
-			case 0:
-				return this.renderItem(item, this.props.kittyStyle);
-			case 1:
-				return this.renderItem(item, this.props.kittyStyle2);
+			case ViewTypes.HeaderItem:
+				// $FlowFixMe
+				return this.props.renderHeader((item: Header).data);
+			case ViewTypes.OddItem:
+				// $FlowFixMe
+				return this.renderItem((item: Kitty), this.props.kittyStyle);
+			case ViewTypes.NotOddItem:
+				// $FlowFixMe
+				return this.renderItem((item: Kitty), this.props.kittyStyle2);
 			default:
 				return null;
 		}
 	};
 
 	componentWillReceiveProps(props: Props) {
-		if (!is(this.props.kitties, props.kitties)) {
+		if (
+			!is(this.props.kitties, props.kitties) ||
+			!is(this.props.headerData, props.headerData)
+		) {
 			this.setState({
-				dataProvider: this.state.dataProvider.cloneWithRows(
-					props.kitties.toArray()
+				dataProvider: this.state.dataProvider.clone(
+					props.kitties,
+					props.headerData
 				)
 			});
 		}

@@ -23,6 +23,15 @@ class ListKittyScreen_ extends React.Component {
 		});
 	};
 
+	renderHeader = data => {
+		return (
+			<ListSettingsView
+				settings={data}
+				onSettingsChanged={this.props.onSettingsChanged}
+			/>
+		);
+	};
+
 	render() {
 		const {data, loadingState} = this.props.kittyList;
 
@@ -34,11 +43,6 @@ class ListKittyScreen_ extends React.Component {
 
 		return (
 			<View style={styles.flex1}>
-				<ListSettingsView
-					settings={this.props.kittyList.settings}
-					onSettingsChanged={this.props.onSettingsChanged}
-				/>
-
 				<KittyListRecycler
 					kitties={data}
 					listStyle={styles.flex1}
@@ -49,6 +53,8 @@ class ListKittyScreen_ extends React.Component {
 					refreshing={refreshing}
 					onEndReached={this.props.onLoadMore}
 					onKittySharePress={this.shareKitty}
+					headerData={this.props.kittyList.settings}
+					renderHeader={this.renderHeader}
 				/>
 			</View>
 		);
