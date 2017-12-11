@@ -4,7 +4,6 @@ import type {PromiseCancel} from "../api/types";
 
 export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
 	return Observable.create(observer => {
-
 		promise.promise
 			.then(result => {
 				observer.next(result);

@@ -9,47 +9,53 @@ type State = {
 	ids: Set<string>,
 	loadingState: "refreshing" | "loading" | "idle",
 	meeeooow: ?string
-}
+};
 
 const initialState: State = {
 	data: List(),
 	ids: Set(),
-	loadingState: 'idle',
+	loadingState: "idle",
 	meeeooow: null
 };
 
-export default (state: State = initialState, action: KittyListActions): State => {
+export default (
+	state: State = initialState,
+	action: KittyListActions
+): State => {
 	switch (action.type) {
-		case 'KITTY_LIST_REQUEST' :
+		case "KITTY_LIST_REQUEST":
 			return {...state, meeeooow: null};
 
-		case 'KITTY_LIST_LOADING':
-			return {...state, loadingState: action.refresh ? 'refreshing' : 'loading'};
+		case "KITTY_LIST_LOADING":
+			return {
+				...state,
+				loadingState: action.refresh ? "refreshing" : "loading"
+			};
 
-		case 'KITTY_LIST_SUCCESS':
+		case "KITTY_LIST_SUCCESS":
 			if (action.refresh) {
 				return {
-					loadingState: 'idle',
+					loadingState: "idle",
 					data: List(action.data),
 					ids: Set(action.data.map(item => item.id)),
-					meeeooow: null,
-				}
+					meeeooow: null
+				};
 			} else {
 				const itemsToAdd = action.data.filter(item => !state.ids.has(item.id));
 				return {
-					loadingState: 'idle',
+					loadingState: "idle",
 					data: state.data.concat(itemsToAdd),
 					ids: state.ids.merge(itemsToAdd.map(item => item.id)),
 					meeeooow: null
-				}
+				};
 			}
-		case 'KITTY_LIST_FAILURE':
+		case "KITTY_LIST_FAILURE":
 			return {
 				...state,
-				loadingState: 'idle',
+				loadingState: "idle",
 				meeeooow: action.meeeooow
 			};
 		default:
 			return state;
 	}
-}
+};

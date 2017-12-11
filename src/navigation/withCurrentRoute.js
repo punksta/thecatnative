@@ -1,26 +1,25 @@
 // @flow
-import * as React from "react"
-import type {NavigationState, NavigationRoute} from "react-navigation"
+import * as React from "react";
+import type {NavigationState, NavigationRoute} from "react-navigation";
 
-
-type Route = NavigationRoute
-
-
-
+type Route = NavigationRoute;
 
 const getCurrentRoute = (state: NavigationState | Route): Route => {
 	if (state.routes && typeof state.index === "number") {
 		// $FlowFixMe
-		return getCurrentRoute(state.routes[state.index])
+		return getCurrentRoute(state.routes[state.index]);
 	} else {
 		// $FlowFixMe
-		return state
+		return state;
 	}
 };
 
-
-export function withCurrentRoute <PropsInput: {}, S: NavigationState, PropsOutput: {}>(
-	getNavigationState: (PropsInput) => S,
+export function withCurrentRoute<
+	PropsInput: {},
+	S: NavigationState,
+	PropsOutput: {}
+>(
+	getNavigationState: PropsInput => S,
 	mapperFn: (PropsInput, ?Route) => PropsOutput
 ): (React.ComponentType<PropsOutput>) => React.ComponentType<PropsInput> {
 	return Component => {
@@ -31,12 +30,8 @@ export function withCurrentRoute <PropsInput: {}, S: NavigationState, PropsOutpu
 				const currentRoute: ?Route = getCurrentRoute(currentState);
 
 				const outPutProps: PropsOutput = mapperFn(props, currentRoute);
-				return (
-					<Component
-						{...outPutProps}
-					/>
-				)
+				return <Component {...outPutProps} />;
 			}
-		}
+		};
 	};
 }

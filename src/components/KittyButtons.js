@@ -1,28 +1,26 @@
 // @flow
-import * as React from "react"
-import {pure} from "recompose"
+import * as React from "react";
+import {pure} from "recompose";
 import {View, Image, TouchableOpacity} from "react-native";
-
 
 type Props = {
 	onShareClick: () => void,
 	onLikeClick: () => void,
 	onDislikeClick: () => void
-}
+};
 
 const KittyButtons: React.ComponentType<Props> = ({
-													  onShareClick,
-													  onLikeClick,
-													  onDislikeClick
-												  }: Props) => {
+	onShareClick,
+	onLikeClick,
+	onDislikeClick
+}: Props) => {
 	return (
-		<View style={{
-			flexDirection: 'row',
-		}}
+		<View
+			style={{
+				flexDirection: "row"
+			}}
 		>
-			<TouchableOpacity
-				onPress={onShareClick}
-			>
+			<TouchableOpacity onPress={onShareClick}>
 				<Image
 					style={{
 						margin: 8,
@@ -30,14 +28,11 @@ const KittyButtons: React.ComponentType<Props> = ({
 						height: 32,
 						tintColor: "#81a2ff"
 					}}
-					resizeMode={'contain'}
-
+					resizeMode={"contain"}
 					source={require("../assets/img/share_icon.png")}
 				/>
 			</TouchableOpacity>
-			<TouchableOpacity
-				onPress={onLikeClick}
-			>
+			<TouchableOpacity onPress={onLikeClick}>
 				<Image
 					style={{
 						margin: 8,
@@ -46,13 +41,11 @@ const KittyButtons: React.ComponentType<Props> = ({
 						marginHorizontal: 8,
 						tintColor: "#ff33aa"
 					}}
-					resizeMode={'contain'}
+					resizeMode={"contain"}
 					source={require("../assets/img/favorite_icon.png")}
 				/>
 			</TouchableOpacity>
-			<TouchableOpacity
-				onPress={onDislikeClick}
-			>
+			<TouchableOpacity onPress={onDislikeClick}>
 				<Image
 					style={{
 						margin: 8,
@@ -61,14 +54,14 @@ const KittyButtons: React.ComponentType<Props> = ({
 						marginHorizontal: 8,
 						tintColor: "#e32003"
 					}}
-					resizeMode={'contain'}
+					resizeMode={"contain"}
 					source={require("../assets/img/dislike_icon.png")}
 				/>
 			</TouchableOpacity>
 		</View>
-	)
+	);
 };
 
 const pureButton: React.ComponentType<Props> = pure(KittyButtons);
 
-export default pureButton
+export default pureButton;

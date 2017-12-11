@@ -1,9 +1,15 @@
 // @flow
-import * as React from "react"
-import {VirtualizedList, StyleSheet, Image, View, ActivityIndicator} from "react-native"
+import * as React from "react";
+import {
+	VirtualizedList,
+	StyleSheet,
+	Image,
+	View,
+	ActivityIndicator
+} from "react-native";
 
-import {KittyImage} from "./KittyImage"
-import {List} from "immutable"
+import {KittyImage} from "./KittyImage";
+import {List} from "immutable";
 import type {Kitty} from "../api/types";
 import KittyLoader from "./KittyLoader";
 
@@ -15,14 +21,13 @@ type Props = {
 	loading?: boolean,
 	refreshing?: boolean,
 	onRefresh?: () => void,
-	onEndReached?:() => void,
-	onKittyLikePress?: (Kitty) => void,
-	onKittyUnLikePress?: (Kitty) => void,
-	onKittySharePress?: (Kitty) => void,
-}
+	onEndReached?: () => void,
+	onKittyLikePress?: Kitty => void,
+	onKittyUnLikePress?: Kitty => void,
+	onKittySharePress?: Kitty => void
+};
 
 export default class KittyList extends React.Component<Props> {
-
 	getItemList = (data: List<*>, index: number) => {
 		return data.get(index);
 	};
@@ -33,35 +38,42 @@ export default class KittyList extends React.Component<Props> {
 
 	getTableStyle = (index: number) => {
 		const cellNumber = Math.round((index + 1) / 2);
-		const cellNumberIsOdd = (cellNumber % 2 === 1);
+		const cellNumberIsOdd = cellNumber % 2 === 1;
 		const itemIsOdd = (index + 1) % 2 === 1;
 
-		return (itemIsOdd !== cellNumberIsOdd) ? this.props.kittyStyle : this.props.kittyStyle2
-	}
+		return itemIsOdd !== cellNumberIsOdd
+			? this.props.kittyStyle
+			: this.props.kittyStyle2;
+	};
 
 	getListStyle = (index: number) => {
 		const itemIsOdd = (index + 1) % 2 === 1;
-		return (itemIsOdd) ? this.props.kittyStyle : this.props.kittyStyle2
-	}
+		return itemIsOdd ? this.props.kittyStyle : this.props.kittyStyle2;
+	};
 
-	renderItem = (info: { item: Kitty, index: number }) => {
-		return	(
+	renderItem = (info: {item: Kitty, index: number}) => {
+		return (
 			<KittyImage
 				url={info.item.url}
 				style={this.getListStyle(info.index)}
 				buttonsProps={{
-					onShareClick: () => this.props.onKittySharePress && this.props.onKittySharePress(info.item),
-					onLikeClick:  () => this.props.onKittyLikePress && this.props.onKittyLikePress(info.item),
-					onDislikeClick: () => this.props.onKittyUnLikePress && this.props.onKittyUnLikePress(info.item),
+					onShareClick: () =>
+						this.props.onKittySharePress &&
+						this.props.onKittySharePress(info.item),
+					onLikeClick: () =>
+						this.props.onKittyLikePress &&
+						this.props.onKittyLikePress(info.item),
+					onDislikeClick: () =>
+						this.props.onKittyUnLikePress &&
+						this.props.onKittyUnLikePress(info.item)
 				}}
 			/>
-		)
+		);
 	};
 
 	keyExtractor = (item: Kitty) => {
-		return item.id
+		return item.id;
 	};
-
 
 	renderFooter = () => {
 		if (!this.props.loading) return null;
@@ -69,18 +81,15 @@ export default class KittyList extends React.Component<Props> {
 		return (
 			<View
 				style={{
-					justifyContent: 'center',
-					alignItems: 'center',
+					justifyContent: "center",
+					alignItems: "center",
 					paddingVertical: 25,
-					flexDirection: 'row'
+					flexDirection: "row"
 				}}
 			>
-				<KittyLoader/>
-				<View
-					style={{flex:0.3}}
-				/>
-				<KittyLoader/>
-
+				<KittyLoader />
+				<View style={{flex: 0.3}} />
+				<KittyLoader />
 			</View>
 		);
 	};
@@ -102,6 +111,6 @@ export default class KittyList extends React.Component<Props> {
 				onEndReachedThreshold={0.7}
 				onEndReached={this.props.onEndReached}
 			/>
-		)
+		);
 	}
 }

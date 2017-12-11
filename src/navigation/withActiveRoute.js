@@ -1,8 +1,8 @@
 //@flow
-import * as React from "react"
-import {withCurrentRoute} from "./withCurrentRoute"
+import * as React from "react";
+import {withCurrentRoute} from "./withCurrentRoute";
 
-type isActiveProps<P> = P & {isActive: boolean}
+type isActiveProps<P> = P & {isActive: boolean};
 
 /**
  * hoc which adds isActive to props of given component
@@ -10,7 +10,7 @@ type isActiveProps<P> = P & {isActive: boolean}
  * @param Component
  * @return {*}
  */
-export default function <Props: {nav: *, navigation: *}> (
+export default function<Props: {nav: *, navigation: *}>(
 	Component: React.ComponentType<isActiveProps<Props>>
 ): React.ComponentType<Props> {
 	const hoc = withCurrentRoute(
@@ -20,9 +20,8 @@ export default function <Props: {nav: *, navigation: *}> (
 			return {
 				...p,
 				isActive
-			}
+			};
 		}
 	);
-	return hoc(Component)
+	return hoc(Component);
 }
-

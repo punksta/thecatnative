@@ -6,11 +6,13 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
     "icon-android": "app-icon generate  --platforms=android",
-    "icon-ios": "app-icon generate  --platforms=ios"
+    "icon-ios": "app-icon generate  --platforms=ios",
+    "prettier": "prettier --write \"{src,__{tests,mocks}__}/**/*.js\""
   },
   "dependencies": {
     "axios": "^0.17.1",
     "immutable": "^3.8.2",
+    "prettier": "^1.9.1",
     "react": "16.0.0",
     "react-native": "0.51.0",
     "react-native-fast-image": "^2.0.1",

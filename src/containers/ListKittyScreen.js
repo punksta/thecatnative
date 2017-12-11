@@ -1,12 +1,9 @@
 import * as React from "react";
-import {Text, StyleSheet, Dimensions, Image, View} from "react-native"
-import {List} from "immutable";
-import KittyList from "../components/KittyList";
-import Api from "../api";
+import {Share, StyleSheet, Dimensions, Image} from "react-native";
 import withActiveRoute from "../navigation/withActiveRoute";
 import {connect} from "react-redux";
 import KittyListRecycler from "../components/KittyListRecycler";
-
+import type {Kitty} from "../api/types";
 
 class ListKittyScreen_ extends React.Component {
 	constructor(props) {
@@ -14,17 +11,24 @@ class ListKittyScreen_ extends React.Component {
 	}
 
 	shouldComponentUpdate(newProps) {
-		return newProps.isActive
+		return newProps.isActive;
 	}
 
-	render() {
+	shareKitty = (kitty: Kitty) => {
+		Share.share({
+			title: "Checkout nice kitty!",
+			message: kitty.source_url
+		});
+	};
 
+	render() {
 		const {data, loadingState} = this.props.kittyList;
 
-		const loading = loadingState === "loading" ||
+		const loading =
+			loadingState === "loading" ||
 			(loadingState === "refreshing" && data.size === 0);
 
-		const refreshing = loadingState === "refreshing" && !loading
+		const refreshing = loadingState === "refreshing" && !loading;
 
 		return (
 			<KittyListRecycler
@@ -36,35 +40,38 @@ class ListKittyScreen_ extends React.Component {
 				loading={loading}
 				refreshing={refreshing}
 				onEndReached={this.props.onLoadMore}
+				onKittySharePress={this.shareKitty}
 			/>
-		)
+		);
 	}
 }
 
-
 const ListKittyScreen = withActiveRoute(ListKittyScreen_);
 
-ListKittyScreen.navigationOptions = ({
+ListKittyScreen.navigationOptions = {
 	header: () => null,
 	tabBarIcon: ({tintColor, focused}) => (
 		<Image
-			source={require('../assets/img/few_cats_logo.png')}
-			style={[focused ? styles.iconFocused : styles.icon, {tintColor: tintColor}]}
-			resizeMode={'contain'}
-		/>)
+			source={require("../assets/img/few_cats_logo.png")}
+			style={[
+				focused ? styles.iconFocused : styles.icon,
+				{tintColor: tintColor}
+			]}
+			resizeMode={"contain"}
+		/>
+	)
+};
 
-});
-
-const mapToState = (state) => ({
+const mapToState = state => ({
 	nav: state.nav,
 	kittyList: state.kittyList
 });
 
-const dispatchToProps = (dispatch) => {
+const dispatchToProps = dispatch => {
 	return {
-		onRefresh: () => dispatch({type: 'KITTY_LIST_REQUEST', refresh: true}),
-		onLoadMore: () => dispatch({type: 'KITTY_LIST_REQUEST', refresh: false})
-	}
+		onRefresh: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: true}),
+		onLoadMore: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: false})
+	};
 };
 
 export default connect(mapToState, dispatchToProps)(ListKittyScreen);
@@ -79,7 +86,7 @@ const styles = StyleSheet.create({
 		height: 40
 	},
 	list: {
-		flex: 1,
+		flex: 1
 	},
 	image: {
 		width: Dimensions.get("window").width,
