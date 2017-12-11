@@ -1,88 +1,117 @@
 // @flow
 import {xmlToJson} from "../xml";
-import axios from 'axios'
-import config from "../config.json"
+import axios from "axios";
+import config from "../config.json";
 import type {Api, FetchKittiesParams, FetchKittyParams, Kitty} from "./types";
 
 const url = "http://thecatapi.com";
 
-
-
-
 class ApiIml implements Api {
 	fetchKitty = () => {
-		return axios.get(`${url}/api/images/get`, {
-			params: {
-				format: 'xml',
-				type: 'gif',
-				api_key: config.api_key,
-				size: 'med'
-			}
-		})
+		return axios
+			.get(`${url}/api/images/get`, {
+				params: {
+					format: "xml",
+					type: "gif",
+					api_key: config.api_key,
+					size: "med"
+				}
+			})
 			.then(r => r.data)
 			.then(xmlToJson)
-			.then(r => r.response.data.images.image)
-	}
+			.then(r => r.response.data.images.image);
+	};
 
 	fetchKitties = () => {
-		return axios.get(`${url}/api/images/get`, {
-			params: {
-				format: 'xml',
-				api_key: config.api_key,
-				size: 'med',
-				results_per_page: 30
-			}
-		})
+		return axios
+			.get(`${url}/api/images/get`, {
+				params: {
+					format: "xml",
+					api_key: config.api_key,
+					size: "med",
+					results_per_page: 30
+				}
+			})
 			.then(r => r.data)
 			.then(xmlToJson)
 			.then(r => {
 				return r.response.data.images.image;
-			})
-	}
+			});
+	};
 
-	fetchKitty_ = (params) => {
-		const r =  this.fetchKitties_({...params, count:1});
-
+	fetchKitty_ = params => {
+		const r = this.fetchKitties_({...params, count: 1});
 		return {
 			cancel: r.cancel,
 			promise: r.promise.then(array => array[0])
-		}
-	}
+		};
+	};
 
-	fetchKitties_= (params) => {
+	fetchKitties_ = params => {
 		const r = requestGet({
 			url: `${url}/api/images/get`,
 			params: {
-				format: 'xml',
-				type: params.type === "gif" ? 'gif' : 'png,jpg',
-				size: 'med',
+				format: "xml",
+				api_key: config.api_key,
+				type: params.type === "gif" ? "gif" : "png,jpg",
+				size: "med",
 				results_per_page: params.count
 			}
 		});
 
 		return {
 			cancel: r.cancel,
-			promise: r.promise
-				.then(r => xmlToJson(r.data))
-				.then(r => {
-					return r.response.data.images.image;
-				})
-		}
-	}
+			promise: r.promise.then(r => xmlToJson(r.data)).then(r => {
+				return r.response.data.images.image;
+			})
+		};
+	};
+
+	voteKitty_ = params => {
+		const r = requestGet({
+			url: `${url}/api/images/vote`,
+			params: {
+				image_id: params.kittyId,
+				score: params.score,
+				api_key: config.api_key
+			}
+		});
+
+		return {
+			cancel: r.cancel,
+			promise: r.promise.then(r => xmlToJson(r.data))
+		};
+	};
+
+	getVotes_ = () => {
+		const r = requestGet({
+			url: `${url}/api/images/getvotes`,
+			params: {
+				api_key: config.api_key
+			}
+		});
+
+		return {
+			cancel: r.cancel,
+			promise: r.promise.then(r => xmlToJson(r.data)).then(r => {
+				return r.response.data.images.image;
+			})
+		};
+	};
 }
 
-type Response = {data: string}
+type Response = {data: string};
 
 type CancelPromise = {
 	cancel: (reason?: string) => void,
 	promise: Promise<Response>
-}
+};
 
-const requestGet = <T>(data: { url: string, params: {} }): CancelPromise => {
+const requestGet = <T>(data: {url: string, params: {}}): CancelPromise => {
 	const cancelSource = axios.CancelToken.source();
 
 	const request = {
-		method: 'get',
+		method: "get",
 		url: data.url,
 		params: {
 			...data.params,
@@ -91,13 +120,13 @@ const requestGet = <T>(data: { url: string, params: {} }): CancelPromise => {
 		cancelToken: cancelSource.token
 	};
 
-	const promise:  Promise<{data: string}> = axios(request);
+	const promise: Promise<{data: string}> = axios(request);
 
 	return {
 		promise,
 		cancel: cancelSource.cancel
 	};
-}
+};
 
 const api: Api = new ApiIml();
 
