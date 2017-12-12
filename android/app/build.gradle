@@ -99,10 +99,10 @@ android {
 
 
     defaultConfig {
-        applicationId "com.thecatnative"
+        applicationId "com.punksta.apps.kitties"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
+        versionCode 2
         versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
