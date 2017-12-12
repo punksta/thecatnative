@@ -1,35 +1,21 @@
 // @flow
 
 import * as React from "react";
-import {Switch, Text, View} from "react-native";
+import {Switch, Text, View, StyleSheet} from "react-native";
 import type {ListSettings} from "../reducers/kittyList";
 import {pure} from "recompose";
 
 type Props = {
 	settings: ListSettings,
-	onSettingsChanged: ListSettings => void
+	onSettingsChanged: ListSettings => void,
+	rootViewStyle: *
 };
 
 const ListSettingsView = (props: Props) => {
 	return (
-		<View
-			style={{
-				margin: 16
-			}}
-		>
-			<View
-				style={{
-					flexDirection: "row"
-				}}
-			>
-				<Text
-					style={{
-						fontSize: 20,
-						fontWeight: "bold"
-					}}
-				>
-					GIF
-				</Text>
+		<View style={props.rootViewStyle}>
+			<View style={styles.row}>
+				<Text style={styles.text}>GIF</Text>
 				<Switch
 					onValueChange={isSelected => {
 						const type = isSelected ? "gif" : "img";
@@ -47,6 +33,16 @@ const ListSettingsView = (props: Props) => {
 	);
 };
 
+const styles = StyleSheet.create({
+	row: {
+		flexDirection: "row",
+		justifyContent: "center"
+	},
+	text: {
+		fontSize: 20,
+		fontWeight: "bold"
+	}
+});
 const component: React.ComponentType<Props> = pure(ListSettingsView);
 
 export default component;

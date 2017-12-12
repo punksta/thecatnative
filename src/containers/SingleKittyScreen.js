@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "#ffe1e1"
+		backgroundColor: "rgba(131, 196, 245, 0.2)"
+		// backgroundColor: "#ffe1e1"
 	},
 	shareKitty: {
 		position: "absolute",
@@ -118,11 +119,6 @@ const styles = StyleSheet.create({
 	nextTextStyle: {
 		fontSize: 20,
 		color: "#ffffff"
-	},
-	instructions: {
-		textAlign: "center",
-		color: "#ffffff",
-		marginBottom: 5
 	},
 	icon: {
 		width: 70,

@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import {AppNavigator} from "./src/navigation/AppNavigator";
 
 import type {NavigationDispatch} from "react-navigation"
-
+import {Image, View, Dimensions} from "react-native"
 import {addNavigationHelpers, NavigationActions} from 'react-navigation';
 import {combineReducers, createStore, applyMiddleware} from "redux";
 import {createNavReducer} from "./src/reducers/navReducer";
@@ -50,6 +50,7 @@ const appReducer = combineReducers({
 
 import { createEpicMiddleware } from 'redux-observable';
 import rootEpic from "./src/epics"
+import BackgroundImage from "./src/components/BackgroundImage";
 
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
@@ -65,9 +66,20 @@ const store = createStore(
 export default class Root extends React.Component<{}> {
 	render() {
 		return (
-			<Provider store={store}>
-				<AppWithNavigationState />
-			</Provider>
+			<View
+				style={{flex:1}}
+			>
+				<BackgroundImage/>
+
+				<Provider
+				style={{
+					flex:1
+				}}
+					store={store}>
+					<AppWithNavigationState />
+				</Provider>
+			</View>
 		);
 	}
 }
+

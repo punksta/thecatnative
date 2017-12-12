@@ -26,12 +26,22 @@ const MainScreenNavigator = TabNavigator(
 				height: 50
 			}
 		},
-		tabBarComponent: TabBarBottom
+		tabBarComponent: TabBarBottom,
+		cardStyle: {
+			backgroundColor: "transparent"
+		}
 	}
 );
 
-export const AppNavigator = StackNavigator({
-	Main: {
-		screen: MainScreenNavigator
+export const AppNavigator = StackNavigator(
+	{
+		Main: {
+			screen: MainScreenNavigator
+		}
+	},
+	{
+		cardStyle: {
+			backgroundColor: "transparent"
+		}
 	}
-});
+);

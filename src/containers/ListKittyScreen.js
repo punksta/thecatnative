@@ -47,6 +47,7 @@ class ListKittyScreen_ extends React.Component {
 			<ListSettingsView
 				settings={data}
 				onSettingsChanged={this.props.onSettingsChanged}
+				rootViewStyle={styles.headerStyle}
 			/>
 		);
 	};
@@ -193,14 +194,20 @@ const styles = StyleSheet.create({
 		height: 50,
 		tintColor: "#2dfff5"
 	},
+	headerStyle: {
+		padding: 8,
+		backgroundColor: "rgba(131, 196, 245, 1)",
+		height: 50,
+		justifyContent: "center"
+	},
 	image: {
 		width: Dimensions.get("window").width,
 		height: Dimensions.get("window").width,
-		backgroundColor: "#ffe1e1"
+		backgroundColor: "rgba(131, 196, 245, 0.2)"
 	},
 	image2: {
 		width: Dimensions.get("window").width,
 		height: Dimensions.get("window").width,
-		backgroundColor: "#fffecc"
+		backgroundColor: "rgba(245, 131, 238, 0.2)"
 	}
 });
