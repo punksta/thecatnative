@@ -9,6 +9,8 @@ type Props = {
 	onDislikeClick: () => void
 };
 
+const disableLikes = true;
+
 const KittyButtons: React.ComponentType<Props> = ({
 	onShareClick,
 	onLikeClick,
@@ -32,7 +34,7 @@ const KittyButtons: React.ComponentType<Props> = ({
 					source={require("../assets/img/share_icon.png")}
 				/>
 			</TouchableOpacity>
-			<TouchableOpacity onPress={onLikeClick}>
+			{!disableLikes && <TouchableOpacity onPress={onLikeClick}>
 				<Image
 					style={{
 						margin: 8,
@@ -44,8 +46,8 @@ const KittyButtons: React.ComponentType<Props> = ({
 					resizeMode={"contain"}
 					source={require("../assets/img/favorite_icon.png")}
 				/>
-			</TouchableOpacity>
-			<TouchableOpacity onPress={onDislikeClick}>
+			</TouchableOpacity>}
+			{!disableLikes && <TouchableOpacity onPress={onDislikeClick}>
 				<Image
 					style={{
 						margin: 8,
@@ -57,7 +59,7 @@ const KittyButtons: React.ComponentType<Props> = ({
 					resizeMode={"contain"}
 					source={require("../assets/img/dislike_icon.png")}
 				/>
-			</TouchableOpacity>
+			</TouchableOpacity>}
 		</View>
 	);
 };

@@ -108,9 +108,10 @@ const styles = StyleSheet.create({
 	nextStyle: {
 		position: "relative",
 		marginTop: "auto",
-		backgroundColor: "rgba(255, 64, 141, 0.4)",
+		backgroundColor: "#ff408d",
 		borderWidth: 2,
-		borderColor: "#ff408d",
+		borderColor: "#3c67ff",
+		borderRadius: 8,
 		padding: 8,
 		paddingEnd: 40,
 		paddingStart: 40,
