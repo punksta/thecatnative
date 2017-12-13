@@ -16,16 +16,16 @@ import type {Kitty} from "../api/types";
 import KittyLoader from "./KittyLoader";
 import {RecyclerListView, DataProvider, LayoutProvider} from "recyclerlistview";
 
-interface Header<T: {}> {
-	data: T;
+interface Header {
+	data: any;
 }
 
 class KittyDataProvider extends DataProvider {
 	_list: List<Kitty>;
-	_header: Header<*>;
+	_header: Header;
 	_firstIndexToProcess: number;
 
-	constructor(list: List<Kitty>, headerData: {}) {
+	constructor(list: List<Kitty>, headerData: ?any) {
 		super((a1, a2) => {
 			if (a1.data || a2.data) {
 				return !is(a1.data, a2.data);
@@ -58,7 +58,7 @@ class KittyDataProvider extends DataProvider {
 		return this._list.size + 1;
 	}
 
-	clone(list: List<Kitty>, headerData: {}): KittyDataProvider {
+	clone(list: List<Kitty>, headerData: ?any): KittyDataProvider {
 		const dp = new KittyDataProvider(list, headerData);
 		const iterCount = Math.min(this.getSize(), dp.getSize());
 
@@ -124,9 +124,9 @@ type Props = {
 	loading?: boolean,
 	refreshing?: boolean,
 	onRefresh?: () => void,
-	onEndReached?: () => void,
-	headerData: {},
-	renderHeader: ({}) => {},
+	onEndReached: () => void,
+	headerData: ?any,
+	renderHeader?: any => {},
 	onKittyLikePress?: Kitty => void,
 	onKittyUnLikePress?: Kitty => void,
 	onKittySharePress?: Kitty => void,

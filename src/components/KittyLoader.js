@@ -1,13 +1,21 @@
+// @flow
 import React, {Component} from "react";
 import {Animated, Easing} from "react-native";
+import type {EndCallback} from "react-native/Libraries/Animated/src/animations/Animation";
 
-export default class KittyLoader extends Component {
-	constructor(props) {
+type Props = {
+	progress?: number
+};
+
+export default class KittyLoader extends Component<Props> {
+	animationValue: *;
+
+	constructor(props: Props) {
 		super(props);
 		this.animationValue = new Animated.Value(0);
 	}
 
-	startAnimation = onEnd => {
+	startAnimation = (onEnd: EndCallback) => {
 		Animated.timing(this.animationValue, {
 			toValue: 1,
 			duration: 5000,
@@ -26,7 +34,9 @@ export default class KittyLoader extends Component {
 	}
 
 	render() {
-		if (this.props.progress > 0.8) {
+		let props = this.props;
+
+		if (props["progress"] && props.progress > 0.8) {
 			return null;
 		}
 		const spin = this.animationValue.interpolate({

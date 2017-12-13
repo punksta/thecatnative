@@ -1,3 +1,5 @@
+// @flow
+
 import * as React from "react";
 import {
 	Share,
@@ -15,20 +17,43 @@ import type {Kitty} from "../api/types";
 import ListSettingsView from "../components/ListSettingsView";
 import type {ListSettings} from "../reducers/kittyList";
 import type {ScrollEvent} from "../components/KittyListRecycler";
+import type {ScreenProps} from "../navigation/ScreenProps";
+import type {State as ListKittyState} from "../reducers/kittyList";
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(
 	TouchableOpacity
 );
 
-class ListKittyScreen_ extends React.Component {
+type SpecialProps = {
+	kittyList: ListKittyState,
+	onSettingsChanged: ListSettings => void,
+	onRefresh: () => void,
+	onLoadMore: () => void,
+	nav: *
+};
+
+type Props = ScreenProps & SpecialProps;
+
+type State = {
+	scrollY: any
+};
+
+class ListKittyScreen_ extends React.Component<Props, State> {
+	offSetY: number;
+	lastAnimationValue: number;
+	state: State;
+
 	constructor(props) {
 		super(props);
+		this.lastAnimationValue = 50;
+
 		this.state = {
-			scrollY: new Animated.Value(50)
+			scrollY: new Animated.Value(this.lastAnimationValue)
 		};
 		this.offSetY = 0;
-		this._value = 50;
-		this.state.scrollY.addListener(({value}) => (this._value = value));
+		this.state.scrollY.addListener(
+			({value}) => (this.lastAnimationValue = value)
+		);
 	}
 
 	shouldComponentUpdate(newProps) {
@@ -38,11 +63,11 @@ class ListKittyScreen_ extends React.Component {
 	shareKitty = (kitty: Kitty) => {
 		Share.share({
 			title: "Checkout nice kitty!",
-			message: kitty.source_url
+			message: kitty.url
 		});
 	};
 
-	renderHeader = data => {
+	renderHeader = (data: ListSettings) => {
 		return (
 			<ListSettingsView
 				settings={data}
@@ -63,7 +88,7 @@ class ListKittyScreen_ extends React.Component {
 	) => {
 		let diff = offsetY - this.offSetY;
 
-		let current = this._value;
+		let current = this.lastAnimationValue;
 		let next = current;
 
 		if (diff > 0) {
@@ -115,8 +140,8 @@ class ListKittyScreen_ extends React.Component {
 					onEndReached={this.props.onLoadMore}
 					onKittySharePress={this.shareKitty}
 					headerData={this.props.kittyList.settings}
-					renderHeader={this.renderHeader}
 					onScroll={(...event) => this.onScrollAnimated(...event)}
+					renderHeader={this.renderHeader}
 				/>
 				<Animated.View style={styles.fabWrapper}>
 					<AnimatedTouchableOpacity
@@ -142,6 +167,7 @@ class ListKittyScreen_ extends React.Component {
 
 const ListKittyScreen = withActiveRoute(ListKittyScreen_);
 
+// $FlowFixMe
 ListKittyScreen.navigationOptions = {
 	header: () => null,
 	tabBarIcon: ({tintColor, focused}) => (

@@ -1,6 +1,7 @@
 //@flow
 import * as React from "react";
 import {withCurrentRoute} from "./withCurrentRoute";
+import type {NavigationProp} from "react-navigation";
 
 type isActiveProps<P> = P & {isActive: boolean};
 
@@ -10,7 +11,7 @@ type isActiveProps<P> = P & {isActive: boolean};
  * @param Component
  * @return {*}
  */
-export default function<Props: {nav: *, navigation: *}>(
+export default function<Props: {nav: *, navigation: NavigationProp<*>}>(
 	Component: React.ComponentType<isActiveProps<Props>>
 ): React.ComponentType<Props> {
 	const hoc = withCurrentRoute(

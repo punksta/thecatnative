@@ -7,7 +7,8 @@
     "test": "jest",
     "icon-android": "app-icon generate  --platforms=android",
     "icon-ios": "app-icon generate  --platforms=ios",
-    "prettier": "prettier --write \"{src,__{tests,mocks}__}/**/*.js\""
+    "prettier": "prettier --write \"{src,__{tests,mocks}__}/**/*.js\"",
+    "flow-check": "flow check --show-all-errors"
   },
   "dependencies": {
     "axios": "^0.17.1",
@@ -18,7 +19,7 @@
     "react-native-fast-image": "^2.0.1",
     "react-native-image-progress": "^1.0.1",
     "react-native-xml2js": "^1.0.3",
-    "react-navigation": "^1.0.0-beta.21",
+    "react-navigation": "https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.6",
     "recompose": "^0.26.0",
     "recyclerlistview": "^1.2.2",

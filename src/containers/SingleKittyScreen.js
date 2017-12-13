@@ -13,6 +13,8 @@ import {KittyImage} from "../components/KittyImage";
 import {connect} from "react-redux";
 import withActiveRoute from "../navigation/withActiveRoute";
 
+//todo: refactor to redux
+
 class SingleKittyScreen_ extends Component<{}> {
 	constructor(props) {
 		super(props);
@@ -29,7 +31,7 @@ class SingleKittyScreen_ extends Component<{}> {
 	shareKitty = () => {
 		Share.share({
 			title: "Checkout nice kitty!",
-			message: this.state.kitty.source_url
+			message: this.state.kitty.url
 		});
 	};
 

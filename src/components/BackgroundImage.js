@@ -1,3 +1,4 @@
+// @flow
 import * as React from "react";
 import {Image, Dimensions, StyleSheet} from "react-native";
 import {onlyUpdateForKeys} from "recompose";
