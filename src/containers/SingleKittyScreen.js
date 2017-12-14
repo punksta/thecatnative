@@ -9,7 +9,6 @@ import {
 	TouchableOpacity,
 	Share
 } from "react-native";
-import Api from "../api";
 import {KittyImage} from "../components/KittyImage";
 import {connect} from "react-redux";
 import withActiveRoute from "../navigation/withActiveRoute";
@@ -78,7 +77,7 @@ class SingleKittyScreen_ extends Component<Props> {
 
 	requestKittyIfRequired = () => {
 		if (
-			!this.props.singleKittyState.kitty ||
+			!this.props.singleKittyState.kitty &&
 			this.props.singleKittyState.loading === null
 		) {
 			this.props.requestKitty();
