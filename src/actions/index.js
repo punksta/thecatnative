@@ -30,7 +30,7 @@ export type KittyListActions =
 
 export type DeepLinkActions = {
 	type: "KITTY_DEEP_LINK_MEOW",
-	link: string
+	kittyId: string
 };
 
 export type SingleKittyActions =

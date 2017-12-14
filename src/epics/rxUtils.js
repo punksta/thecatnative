@@ -1,6 +1,8 @@
 // @flow
 import {Observable} from "rxjs/Observable";
 import type {PromiseCancel} from "../api/types";
+import "rxjs/add/observable/fromPromise";
+import "rxjs/add/operator/catch";
 
 export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
 	return Observable.create(observer => {
@@ -16,4 +18,10 @@ export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
 			promise.cancel("observable unsubsidised");
 		};
 	});
+};
+
+export const fromPromiseIgnoreErrors = <T>(
+	promise: Promise<T>
+): Observable<T> => {
+	return Observable.fromPromise(promise).catch(e => Observable.empty());
 };
