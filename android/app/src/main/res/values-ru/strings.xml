@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Котики</string>
+    <string name="deepLinkName">Посмотреть котика</string>
+</resources>
