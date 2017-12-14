@@ -1,3 +1,4 @@
+// @flow
 import React, {Component} from "react";
 import {
 	StyleSheet,
@@ -13,26 +14,34 @@ import {KittyImage} from "../components/KittyImage";
 import {connect} from "react-redux";
 import withActiveRoute from "../navigation/withActiveRoute";
 
-//todo: refactor to redux
+import type {State as SingleKittyState} from "../reducers/singleKitty";
+import type {ScreenProps} from "../navigation/ScreenProps";
 
-class SingleKittyScreen_ extends Component<{}> {
+type SpecialProps = {
+	singleKittyState: SingleKittyState,
+	requestKitty: (id?: string) => void,
+	nav: *
+};
+
+type Props = ScreenProps & SpecialProps;
+
+class SingleKittyScreen_ extends Component<Props> {
 	constructor(props) {
 		super(props);
-		this.state = {};
 	}
 
-	newKitty = () => {
-		Api.fetchKitty().then(kitty => {
-			this.setState({kitty});
-			console.log(JSON.stringify(kitty));
-		});
+	newKitty = (id?: string) => {
+		this.props.requestKitty(id);
 	};
 
 	shareKitty = () => {
-		Share.share({
-			title: "Checkout nice kitty!",
-			message: this.state.kitty.url
-		});
+		let kitty = this.props.singleKittyState.kitty;
+
+		kitty &&
+			Share.share({
+				title: "Checkout nice kitty!",
+				message: kitty.url
+			});
 	};
 
 	shouldComponentUpdate(newProps) {
@@ -40,13 +49,15 @@ class SingleKittyScreen_ extends Component<{}> {
 	}
 
 	render() {
+		const {kitty} = this.props.singleKittyState;
+
 		return (
 			<View style={styles.container}>
-				{this.state.kitty && (
+				{kitty && (
 					<KittyImage
 						kittyLoader
 						style={styles.kittyStyle}
-						url={this.state.kitty.url}
+						url={kitty.url}
 						buttonsProps={{
 							onShareClick: this.shareKitty,
 							onLikeClick: () => {},
@@ -55,19 +66,41 @@ class SingleKittyScreen_ extends Component<{}> {
 					/>
 				)}
 
-				<TouchableOpacity style={styles.nextStyle} onPress={this.newKitty}>
+				<TouchableOpacity
+					style={styles.nextStyle}
+					onPress={() => this.newKitty()}
+				>
 					<Text style={styles.nextTextStyle}>Next</Text>
 				</TouchableOpacity>
 			</View>
 		);
 	}
 
-	componentWillMount() {
-		this.newKitty();
+	requestKittyIfRequired = () => {
+		if (
+			!this.props.singleKittyState.kitty ||
+			this.props.singleKittyState.loading === null
+		) {
+			this.props.requestKitty();
+		}
+	};
+
+	componentDidUpdate(oldProps) {
+		if (!oldProps.isActive && this.props.isActive) {
+			this.requestKittyIfRequired();
+		}
+	}
+
+	componentDidMount() {
+		if (this.props.isActive) {
+			this.requestKittyIfRequired();
+		}
 	}
 }
-SingleKittyScreen = withActiveRoute(SingleKittyScreen_);
 
+const SingleKittyScreen = withActiveRoute(SingleKittyScreen_);
+
+//$FlowFixMe
 SingleKittyScreen.navigationOptions = {
 	header: () => null,
 	tabBarIcon: ({tintColor, focused}) => (
@@ -83,10 +116,19 @@ SingleKittyScreen.navigationOptions = {
 };
 
 const mapToState = state => ({
-	nav: state.nav
+	nav: state.nav,
+	singleKittyState: state.singleKitty
 });
 
-export default connect(mapToState)(SingleKittyScreen);
+const mapDispatchToProps = dispatch => ({
+	requestKitty: (id?: string) =>
+		dispatch({
+			type: "SINGLE_KITTY_REQUEST",
+			id
+		})
+});
+
+export default connect(mapToState, mapDispatchToProps)(SingleKittyScreen);
 
 const styles = StyleSheet.create({
 	container: {

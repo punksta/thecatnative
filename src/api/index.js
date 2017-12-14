@@ -7,43 +7,31 @@ import type {Api, FetchKittiesParams, FetchKittyParams, Kitty} from "./types";
 const url = "http://thecatapi.com";
 
 class ApiIml implements Api {
-	fetchKitty = () => {
-		return axios
-			.get(`${url}/api/images/get`, {
-				params: {
-					format: "xml",
-					type: "gif",
-					api_key: config.api_key,
-					size: "med"
-				}
-			})
-			.then(r => r.data)
-			.then(xmlToJson)
-			.then(r => r.response.data.images.image);
-	};
-
-	fetchKitties = () => {
-		return axios
-			.get(`${url}/api/images/get`, {
-				params: {
-					format: "xml",
-					api_key: config.api_key,
-					size: "med",
-					results_per_page: 30
-				}
-			})
-			.then(r => r.data)
-			.then(xmlToJson)
-			.then(r => {
-				return r.response.data.images.image;
-			});
-	};
-
-	fetchKitty_ = params => {
+	+fetchRandomKitty_ = params => {
 		const r = this.fetchKitties_({...params, count: 1});
 		return {
 			cancel: r.cancel,
-			promise: r.promise.then(array => array[0])
+			promise: r.promise.then(response => {
+				return Array.isArray(response) ? response[0] : response;
+			})
+		};
+	};
+
+	+fetchKitty_ = kittyId => {
+		const r = requestGet({
+			url: `${url}/api/images/get`,
+			params: {
+				format: "xml",
+				size: "med",
+				image_id: kittyId
+			}
+		});
+
+		return {
+			cancel: r.cancel,
+			promise: r.promise.then(r => xmlToJson(r.data)).then(r => {
+				return r.response.data.images.image;
+			})
 		};
 	};
 
@@ -52,7 +40,6 @@ class ApiIml implements Api {
 			url: `${url}/api/images/get`,
 			params: {
 				format: "xml",
-				api_key: config.api_key,
 				type: params.type === "gif" ? "gif" : "png,jpg",
 				size: "med",
 				results_per_page: params.count
@@ -72,8 +59,7 @@ class ApiIml implements Api {
 			url: `${url}/api/images/vote`,
 			params: {
 				image_id: params.kittyId,
-				score: params.score,
-				api_key: config.api_key
+				score: params.score
 			}
 		});
 

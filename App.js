@@ -8,7 +8,7 @@ import React, {Component} from 'react';
 import {AppNavigator} from "./src/navigation/AppNavigator";
 
 import type {NavigationDispatch} from "react-navigation"
-import {Image, View, Dimensions} from "react-native"
+import {Image, View, Dimensions, Linking} from "react-native"
 import {addNavigationHelpers, NavigationActions} from 'react-navigation';
 import {combineReducers, createStore, applyMiddleware} from "redux";
 import {createNavReducer} from "./src/reducers/navReducer";
@@ -45,12 +45,14 @@ const initialState = AppNavigator.router.getStateForAction(NavigationActions.ini
 
 const appReducer = combineReducers({
 	nav: createNavReducer(initialState, AppNavigator),
-	kittyList
+	kittyList,
+	singleKitty
 });
 
 import { createEpicMiddleware } from 'redux-observable';
 import rootEpic from "./src/epics"
 import BackgroundImage from "./src/components/BackgroundImage";
+import singleKitty from "./src/reducers/singleKitty";
 
 const epicMiddleware = createEpicMiddleware(rootEpic);
 
@@ -64,6 +66,15 @@ const store = createStore(
 );
 
 export default class Root extends React.Component<{}> {
+
+	componentDidMount() {
+		Linking.getInitialURL().then((url) => {
+			if (url) {
+				console.log('Initial url is: ' + url);
+			}
+		}).catch(err => console.error('An error occurred', err));
+	}
+
 	render() {
 		return (
 			<View

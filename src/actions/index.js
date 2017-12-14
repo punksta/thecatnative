@@ -28,4 +28,31 @@ export type KittyListActions =
 			settings: ListSettings
 		};
 
-export type Action = NavigationAction | KittyListActions;
+export type DeepLinkActions = {
+	type: "KITTY_DEEP_LINK_MEOW",
+	link: string
+};
+
+export type SingleKittyActions =
+	| {
+			type: "SINGLE_KITTY_REQUEST",
+			id?: string
+		}
+	| {
+			type: "SINGLE_KITTY_LOADING",
+			id?: string
+		}
+	| {
+			type: "SINGLE_KITTY_LOADING_SUCCESS",
+			kitty: Kitty
+		}
+	| {
+			type: "SINGLE_KITTY_LOADING_ERROR",
+			error: string
+		};
+
+export type Action =
+	| NavigationAction
+	| KittyListActions
+	| DeepLinkActions
+	| SingleKittyActions;
