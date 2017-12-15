@@ -1,5 +1,5 @@
 // @flow
-import {xmlToJson} from "../xml";
+import {xmlToJson} from "./xml";
 import axios from "axios";
 import config from "../config.json";
 import type {Api, FetchKittiesParams, FetchKittyParams, Kitty} from "./types";

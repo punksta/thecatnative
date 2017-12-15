@@ -13,7 +13,6 @@ export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
 			.catch(error => {
 				observer.error(error);
 			});
-
 		return () => {
 			promise.cancel("observable unsubsidised");
 		};
@@ -23,5 +22,7 @@ export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
 export const fromPromiseIgnoreErrors = <T>(
 	promise: Promise<T>
 ): Observable<T> => {
-	return Observable.fromPromise(promise).catch(e => Observable.empty());
+	return Observable.of(promise).mergeMap(p =>
+		Observable.fromPromise(p).catch(e => Observable.empty())
+	);
 };
