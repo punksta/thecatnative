@@ -51,8 +51,7 @@ const getDeepLinkIds = () => {
 	return fromPromiseIgnoreErrors(Linking.getInitialURL())
 		.concat(getDeepLinkObservable())
 		.map(urlToKittyId)
-		.filter(id => typeof id === "string")
-
+		.filter(id => typeof id === "string");
 };
 
 let called = false;
