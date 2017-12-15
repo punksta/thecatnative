@@ -93,6 +93,34 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = true
 
+import groovy.swing.SwingBuilder
+System.setProperty('java.awt.headless', 'false')
+
+def readPassword(hint) {
+    def console = System.console()
+    if (console) {
+        return new String(System.console().readPassword(hint))
+    } else {
+         def keyPassPhrase;
+
+          new SwingBuilder().edt {
+                     dialog(modal: true, title: 'Enter credentials', alwaysOnTop: true, resizable: true,
+                             locationRelativeTo: null, pack: true, show: true
+                     ) {
+                         vbox {
+                             label(text: hint)
+                             textField id: "storeText", input = passwordField()
+                             button(defaultButton: true, text: 'OK', actionPerformed: {
+                                 keyPassPhrase = storeText.text;
+                                 dispose();
+                             })
+                         }
+                     }
+         }
+          return  keyPassPhrase;
+    }
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "26.0.2"
@@ -102,8 +130,8 @@ android {
         applicationId "com.punksta.apps.kitties"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 2
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.1"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -112,9 +140,9 @@ android {
         if (System.env.STORE_FILE != null) {
           fromEnv {
              storeFile new File(System.env.STORE_FILE)
-             storePassword System.env.STORE_PASSWORD
-             keyAlias System.env.KEY_ALIAS
-             keyPassword System.env.KEY_PASSWORD
+             storePassword System.env.STORE_PASSWORD ?: readPassword("store password: ")
+             keyAlias System.env.KEY_ALIAS ?: readPassword("keyAlias: ")
+             keyPassword System.env.KEY_PASSWORD ?: readPassword("keyPassword: ")
           }
         }
      }
