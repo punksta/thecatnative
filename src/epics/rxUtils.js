@@ -3,6 +3,9 @@ import {Observable} from "rxjs/Observable";
 import type {PromiseCancel} from "../api/types";
 import "rxjs/add/observable/fromPromise";
 import "rxjs/add/operator/catch";
+import "rxjs/add/operator/mergeMap";
+import "rxjs/add/observable/empty";
+import "rxjs/add/observable/of";
 
 export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
 	return Observable.create(observer => {
@@ -14,7 +17,7 @@ export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
 				observer.error(error);
 			});
 		return () => {
-			promise.cancel("observable unsubsidised");
+			promise.cancel("observable unsubscribed");
 		};
 	});
 };
