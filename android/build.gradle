@@ -17,6 +17,7 @@ allprojects {
     repositories {
         mavenLocal()
         jcenter()
+        google()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
@@ -28,8 +29,8 @@ subprojects { subproject ->
     afterEvaluate{
         if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
             android {
-                compileSdkVersion 25
-                buildToolsVersion "26.0.2"
+                compileSdkVersion 26
+                buildToolsVersion "26.0.3"
             }
         }
     }
