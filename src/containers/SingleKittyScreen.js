@@ -34,7 +34,7 @@ class SingleKittyScreen_ extends Component<Props> {
 	};
 
 	shareKitty = () => {
-		let kitty = this.props.singleKittyState.kitty;
+		const kitty = this.props.singleKittyState.kitty;
 
 		kitty &&
 			Share.share({
@@ -99,17 +99,14 @@ class SingleKittyScreen_ extends Component<Props> {
 
 const SingleKittyScreen = withActiveRoute(SingleKittyScreen_);
 
-//$FlowFixMe
+// $FlowFixMe
 SingleKittyScreen.navigationOptions = {
 	header: () => null,
 	tabBarIcon: ({tintColor, focused}) => (
 		<Image
 			source={require("../assets/img/single_cat_logo.png")}
-			style={[
-				focused ? styles.iconFocused : styles.icon,
-				{tintColor: tintColor}
-			]}
-			resizeMode={"contain"}
+			style={[focused ? styles.iconFocused : styles.icon, {tintColor}]}
+			resizeMode="contain"
 		/>
 	)
 };

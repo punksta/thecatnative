@@ -7,8 +7,8 @@ import "rxjs/add/operator/mergeMap";
 import "rxjs/add/observable/empty";
 import "rxjs/add/observable/of";
 
-export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
-	return Observable.create(observer => {
+export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> =>
+	Observable.create(observer => {
 		promise.promise
 			.then(result => {
 				observer.next(result);
@@ -20,12 +20,10 @@ export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> => {
 			promise.cancel("observable unsubscribed");
 		};
 	});
-};
 
 export const fromPromiseIgnoreErrors = <T>(
 	promise: Promise<T>
-): Observable<T> => {
-	return Observable.of(promise).mergeMap(p =>
+): Observable<T> =>
+	Observable.of(promise).mergeMap(p =>
 		Observable.fromPromise(p).catch(e => Observable.empty())
 	);
-};

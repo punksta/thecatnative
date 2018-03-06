@@ -8,7 +8,9 @@
     "icon-android": "app-icon generate  --platforms=android",
     "icon-ios": "app-icon generate  --platforms=ios",
     "prettier": "prettier --write \"{src,__{tests,mocks}__}/**/*.js\"",
-    "flow-check": "flow check --show-all-errors"
+    "flow-check": "flow check --show-all-errors",
+    "flow-coverage": "flow coverage",
+    "eslint": "eslint src --fix"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -33,7 +35,17 @@
   "devDependencies": {
     "app-icon": "^0.6.3",
     "babel-jest": "21.2.0",
+    "babel-eslint": "^8.2.2",
     "babel-preset-react-native": "4.0.0",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-react-native": "^3.2.1",
     "flow-bin": "^0.65.0",
     "jest": "21.2.1",
     "react-test-renderer": "16.0.0"

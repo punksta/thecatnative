@@ -67,18 +67,16 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 		});
 	};
 
-	renderHeader = (data: ListSettings) => {
-		return (
-			<ListSettingsView
-				settings={data}
-				onSettingsChanged={this.props.onSettingsChanged}
-				rootViewStyle={styles.headerStyle}
-			/>
-		);
-	};
+	renderHeader = (data: ListSettings) => (
+		<ListSettingsView
+			settings={data}
+			onSettingsChanged={this.props.onSettingsChanged}
+			rootViewStyle={styles.headerStyle}
+		/>
+	);
 
 	onTopPress = () => {
-		this.refs["kittyList"] && this.refs["kittyList"].scrollToTop(true);
+		this.refs.kittyList && this.refs.kittyList.scrollToTop(true);
 	};
 
 	onScrollAnimated = (
@@ -86,9 +84,9 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 		offsetX: number,
 		offsetY: number
 	) => {
-		let diff = offsetY - this.offSetY;
+		const diff = offsetY - this.offSetY;
 
-		let current = this.lastAnimationValue;
+		const current = this.lastAnimationValue;
 		let next = current;
 
 		if (diff > 0) {
@@ -129,7 +127,7 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 		return (
 			<View style={styles.flex1}>
 				<KittyListRecycler
-					ref={"kittyList"}
+					ref="kittyList"
 					kitties={data}
 					listStyle={styles.flex1}
 					kittyStyle={styles.image}
@@ -173,11 +171,8 @@ ListKittyScreen.navigationOptions = {
 	tabBarIcon: ({tintColor, focused}) => (
 		<Image
 			source={require("../assets/img/few_cats_logo.png")}
-			style={[
-				focused ? styles.iconFocused : styles.icon,
-				{tintColor: tintColor}
-			]}
-			resizeMode={"contain"}
+			style={[focused ? styles.iconFocused : styles.icon, {tintColor}]}
+			resizeMode="contain"
 		/>
 	)
 };
@@ -187,14 +182,12 @@ const mapToState = state => ({
 	kittyList: state.kittyList
 });
 
-const dispatchToProps = dispatch => {
-	return {
-		onRefresh: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: true}),
-		onLoadMore: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: false}),
-		onSettingsChanged: (settings: ListSettings) =>
-			dispatch({type: "KITTY_LIST_SETTINGS_CHANGED", settings})
-	};
-};
+const dispatchToProps = dispatch => ({
+	onRefresh: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: true}),
+	onLoadMore: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: false}),
+	onSettingsChanged: (settings: ListSettings) =>
+		dispatch({type: "KITTY_LIST_SETTINGS_CHANGED", settings})
+});
 
 export default connect(mapToState, dispatchToProps)(ListKittyScreen);
 

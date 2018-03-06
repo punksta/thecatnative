@@ -19,24 +19,22 @@ const urlToKittyId: string => ?string = url => {
 	try {
 		const urlParsed = urlParse(url, true);
 		if (urlParsed) {
-			if (urlParsed["hostname"] !== "thecatapi.com") {
+			if (urlParsed.hostname !== "thecatapi.com") {
 				return undefined;
-			} else {
-				const query = urlParsed.query["id"];
-				if (typeof query !== "string") {
-					return undefined;
-				} else {
-					return query;
-				}
 			}
+			const query = urlParsed.query.id;
+			if (typeof query !== "string") {
+				return undefined;
+			}
+			return query;
 		}
 	} catch (e) {
 		return undefined;
 	}
 };
 
-export const getDeepLinkObservable = () => {
-	return Observable.create(observer => {
+export const getDeepLinkObservable = () =>
+	Observable.create(observer => {
 		const listener = ({url}) => {
 			observer.next(url);
 		};
@@ -45,14 +43,12 @@ export const getDeepLinkObservable = () => {
 			Linking.removeEventListener("url", listener);
 		};
 	});
-};
 
-const getDeepLinkIds = () => {
-	return fromPromiseIgnoreErrors(Linking.getInitialURL())
+const getDeepLinkIds = () =>
+	fromPromiseIgnoreErrors(Linking.getInitialURL())
 		.concat(getDeepLinkObservable())
 		.map(urlToKittyId)
 		.filter(id => typeof id === "string");
-};
 
 let called = false;
 
@@ -64,8 +60,8 @@ export const deepLinking = (
 		return Observable.empty();
 	}
 	called = true;
-	return getDeepLinkIds().mergeMap(kittyId => {
-		return Observable.concat(
+	return getDeepLinkIds().mergeMap(kittyId =>
+		Observable.concat(
 			Observable.of({
 				type: "SINGLE_KITTY_REQUEST",
 				id: kittyId
@@ -74,6 +70,6 @@ export const deepLinking = (
 				type: "KITTY_DEEP_LINK_MEOW",
 				kittyId
 			})
-		);
-	});
+		)
+	);
 };

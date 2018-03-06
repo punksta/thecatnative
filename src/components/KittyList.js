@@ -28,13 +28,9 @@ type Props = {
 };
 
 export default class KittyList extends React.Component<Props> {
-	getItemList = (data: List<*>, index: number) => {
-		return data.get(index);
-	};
+	getItemList = (data: List<*>, index: number) => data.get(index);
 
-	getItemCountList = (data: List<*>) => {
-		return data.size;
-	};
+	getItemCountList = (data: List<*>) => data.size;
 
 	getTableStyle = (index: number) => {
 		const cellNumber = Math.round((index + 1) / 2);
@@ -51,29 +47,24 @@ export default class KittyList extends React.Component<Props> {
 		return itemIsOdd ? this.props.kittyStyle : this.props.kittyStyle2;
 	};
 
-	renderItem = (info: {item: Kitty, index: number}) => {
-		return (
-			<KittyImage
-				url={info.item.url}
-				style={this.getListStyle(info.index)}
-				buttonsProps={{
-					onShareClick: () =>
-						this.props.onKittySharePress &&
-						this.props.onKittySharePress(info.item),
-					onLikeClick: () =>
-						this.props.onKittyLikePress &&
-						this.props.onKittyLikePress(info.item),
-					onDislikeClick: () =>
-						this.props.onKittyUnLikePress &&
-						this.props.onKittyUnLikePress(info.item)
-				}}
-			/>
-		);
-	};
+	renderItem = (info: {item: Kitty, index: number}) => (
+		<KittyImage
+			url={info.item.url}
+			style={this.getListStyle(info.index)}
+			buttonsProps={{
+				onShareClick: () =>
+					this.props.onKittySharePress &&
+					this.props.onKittySharePress(info.item),
+				onLikeClick: () =>
+					this.props.onKittyLikePress && this.props.onKittyLikePress(info.item),
+				onDislikeClick: () =>
+					this.props.onKittyUnLikePress &&
+					this.props.onKittyUnLikePress(info.item)
+			}}
+		/>
+	);
 
-	keyExtractor = (item: Kitty) => {
-		return item.id;
-	};
+	keyExtractor = (item: Kitty) => item.id;
 
 	renderFooter = () => {
 		if (!this.props.loading) return null;

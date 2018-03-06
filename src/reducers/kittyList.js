@@ -54,16 +54,16 @@ export default (
 					meeeooow: null,
 					settings: state.settings
 				};
-			} else {
-				const itemsToAdd = action.data.filter(item => !state.ids.has(item.id));
-				return {
-					loadingState: "idle",
-					data: state.data.concat(itemsToAdd),
-					ids: state.ids.merge(itemsToAdd.map(item => item.id)),
-					meeeooow: null,
-					settings: state.settings
-				};
 			}
+			const itemsToAdd = action.data.filter(item => !state.ids.has(item.id));
+			return {
+				loadingState: "idle",
+				data: state.data.concat(itemsToAdd),
+				ids: state.ids.merge(itemsToAdd.map(item => item.id)),
+				meeeooow: null,
+				settings: state.settings
+			};
+
 		case "KITTY_LIST_FAILURE":
 			return {
 				...state,

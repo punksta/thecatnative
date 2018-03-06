@@ -54,12 +54,11 @@ export const loadKittiesToList = (
 				);
 
 			return Observable.concat(loadingAction, requestAction).takeUntil(
-				actions.filter(a => {
-					return (
+				actions.filter(
+					a =>
 						(a.type === "KITTY_LIST_REQUEST" && a.refresh) ||
 						a.type === "KITTY_LIST_SETTINGS_CHANGED"
-					);
-				})
+				)
 			);
 		});
 };
@@ -67,12 +66,11 @@ export const loadKittiesToList = (
 export const refreshListOnSettingsChange = (
 	actions: Observable<Action>,
 	store: *
-): Observable<Action> => {
-	return actions
+): Observable<Action> =>
+	actions
 		.ofType("KITTY_LIST_SETTINGS_CHANGED")
 		.debounceTime(300)
 		.map(a => ({
 			type: "KITTY_LIST_REQUEST",
 			refresh: true
 		}));
-};

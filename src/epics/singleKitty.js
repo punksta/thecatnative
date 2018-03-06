@@ -51,9 +51,7 @@ export const loadSingleKitty = (
 				);
 
 			return Observable.concat(loadingAction, requestObservable).takeUntil(
-				actions.filter(a => {
-					return a.type === "SINGLE_KITTY_REQUEST";
-				})
+				actions.filter(a => a.type === "SINGLE_KITTY_REQUEST")
 			);
 		});
 };

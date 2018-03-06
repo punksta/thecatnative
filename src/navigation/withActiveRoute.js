@@ -1,4 +1,4 @@
-//@flow
+// @flow
 import * as React from "react";
 import {withCurrentRoute} from "./withCurrentRoute";
 import type {NavigationProp} from "react-navigation";

@@ -34,9 +34,9 @@ export default class KittyLoader extends Component<Props> {
 	}
 
 	render() {
-		let props = this.props;
+		const props = this.props;
 
-		if (props["progress"] && props.progress > 0.8) {
+		if (props.progress && props.progress > 0.8) {
 			return null;
 		}
 		const spin = this.animationValue.interpolate({
@@ -51,7 +51,7 @@ export default class KittyLoader extends Component<Props> {
 					height: 50,
 					transform: [{rotate: spin}]
 				}}
-				resizeMode={"contain"}
+				resizeMode="contain"
 				source={require("../assets/img/cat_loader.png")}
 			/>
 		);

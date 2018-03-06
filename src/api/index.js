@@ -11,9 +11,9 @@ class ApiIml implements Api {
 		const r = this.fetchKitties_({...params, count: 1});
 		return {
 			cancel: r.cancel,
-			promise: r.promise.then(response => {
-				return Array.isArray(response) ? response[0] : response;
-			})
+			promise: r.promise.then(
+				response => (Array.isArray(response) ? response[0] : response)
+			)
 		};
 	};
 
@@ -29,9 +29,9 @@ class ApiIml implements Api {
 
 		return {
 			cancel: r.cancel,
-			promise: r.promise.then(r => xmlToJson(r.data)).then(r => {
-				return r.response.data.images.image;
-			})
+			promise: r.promise
+				.then(r => xmlToJson(r.data))
+				.then(r => r.response.data.images.image)
 		};
 	};
 
@@ -48,9 +48,9 @@ class ApiIml implements Api {
 
 		return {
 			cancel: r.cancel,
-			promise: r.promise.then(r => xmlToJson(r.data)).then(r => {
-				return r.response.data.images.image;
-			})
+			promise: r.promise
+				.then(r => xmlToJson(r.data))
+				.then(r => r.response.data.images.image)
 		};
 	};
 
@@ -79,9 +79,9 @@ class ApiIml implements Api {
 
 		return {
 			cancel: r.cancel,
-			promise: r.promise.then(r => xmlToJson(r.data)).then(r => {
-				return r.response.data.images.image;
-			})
+			promise: r.promise
+				.then(r => xmlToJson(r.data))
+				.then(r => r.response.data.images.image)
 		};
 	};
 }

@@ -3,15 +3,13 @@ import * as React from "react";
 import {Image, Dimensions, StyleSheet} from "react-native";
 import {onlyUpdateForKeys} from "recompose";
 
-const comp = () => {
-	return (
-		<Image
-			style={styles.image}
-			resizeMode={"cover"}
-			source={require("../assets/img/background.png")}
-		/>
-	);
-};
+const comp = () => (
+	<Image
+		style={styles.image}
+		resizeMode="cover"
+		source={require("../assets/img/background.png")}
+	/>
+);
 
 export default onlyUpdateForKeys([])(comp);
 

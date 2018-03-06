@@ -11,27 +11,25 @@ type Props = {
 	rootViewStyle: *
 };
 
-const ListSettingsView = (props: Props) => {
-	return (
-		<View style={props.rootViewStyle}>
-			<View style={styles.row}>
-				<Text style={styles.text}>GIF</Text>
-				<Switch
-					onValueChange={isSelected => {
-						const type = isSelected ? "gif" : "img";
-						if (type !== props.settings.type) {
-							props.onSettingsChanged({
-								...props.settings,
-								type
-							});
-						}
-					}}
-					value={props.settings.type === "gif"}
-				/>
-			</View>
+const ListSettingsView = (props: Props) => (
+	<View style={props.rootViewStyle}>
+		<View style={styles.row}>
+			<Text style={styles.text}>GIF</Text>
+			<Switch
+				onValueChange={isSelected => {
+					const type = isSelected ? "gif" : "img";
+					if (type !== props.settings.type) {
+						props.onSettingsChanged({
+							...props.settings,
+							type
+						});
+					}
+				}}
+				value={props.settings.type === "gif"}
+			/>
 		</View>
-	);
-};
+	</View>
+);
 
 const styles = StyleSheet.create({
 	row: {

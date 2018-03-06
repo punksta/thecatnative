@@ -29,9 +29,8 @@ class KittyDataProvider extends DataProvider {
 		super((a1, a2) => {
 			if (a1.data || a2.data) {
 				return !is(a1.data, a2.data);
-			} else {
-				return !is(a1.id, a2.id);
 			}
+			return !is(a1.id, a2.id);
 		});
 
 		this._header = {
@@ -83,14 +82,12 @@ const layoutProvider = new LayoutProvider(
 	index => {
 		if (index === 0) {
 			return ViewTypes.HeaderItem;
-		} else {
-			const itemIsOdd = (index + 1) % 2 === 1;
-			if (itemIsOdd) {
-				return ViewTypes.OddItem;
-			} else {
-				return ViewTypes.NotOddItem;
-			}
 		}
+		const itemIsOdd = (index + 1) % 2 === 1;
+		if (itemIsOdd) {
+			return ViewTypes.OddItem;
+		}
+		return ViewTypes.NotOddItem;
 	},
 	(type, dim) => {
 		switch (type) {
@@ -102,7 +99,6 @@ const layoutProvider = new LayoutProvider(
 			default:
 				dim.width = Dimensions.get("window").width;
 				dim.height = Dimensions.get("window").width;
-				return;
 		}
 	}
 );
@@ -146,21 +142,17 @@ export default class KittyList extends React.Component<Props, State> {
 		};
 	}
 
-	getItemList = (data: List<*>, index: number) => {
-		return data.get(index);
-	};
+	getItemList = (data: List<*>, index: number) => data.get(index);
 
-	getItemCountList = (data: List<*>) => {
-		return data.size;
-	};
+	getItemCountList = (data: List<*>) => data.size;
 
 	scrollToTop = (animate: boolean) => {
-		this.refs["list"] && this.refs["list"].scrollToTop(animate);
+		this.refs.list && this.refs.list.scrollToTop(animate);
 	};
 
-	//Given type and data return the view component
+	// Given type and data return the view component
 	_rowRenderer = (type, item: Kitty | Header<*>) => {
-		//You can return any view here, CellContainer has no special significance
+		// You can return any view here, CellContainer has no special significance
 		switch (type) {
 			case ViewTypes.HeaderItem:
 				// $FlowFixMe
@@ -205,9 +197,7 @@ export default class KittyList extends React.Component<Props, State> {
 		);
 	};
 
-	keyExtractor = (item: Kitty) => {
-		return item.id;
-	};
+	keyExtractor = (item: Kitty) => item.id;
 
 	renderFooter = () => {
 		if (!this.props.loading) return null;
@@ -228,19 +218,17 @@ export default class KittyList extends React.Component<Props, State> {
 		);
 	};
 
-	refreshControl = () => {
-		return (
-			<RefreshControl
-				refreshing={this.props.refreshing || false}
-				onRefresh={this.props.onRefresh}
-			/>
-		);
-	};
+	refreshControl = () => (
+		<RefreshControl
+			refreshing={this.props.refreshing || false}
+			onRefresh={this.props.onRefresh}
+		/>
+	);
 
 	render() {
 		return (
 			<RecyclerListView
-				ref={"list"}
+				ref="list"
 				refreshControl={this.refreshControl()}
 				layoutProvider={layoutProvider}
 				dataProvider={this.state.dataProvider}
