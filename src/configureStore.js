@@ -11,11 +11,12 @@ import singleKitty from "./reducers/singleKitty";
 import {AppNavigator} from "./navigation/AppNavigator";
 import {NavigationActions} from "react-navigation";
 import {createNavReducer} from "./reducers/navReducer";
+import type {Middleware} from "redux";
 
-export default () => {
+export default (navigationMiddleware: Middleware) => {
 	const epicMiddleware = createEpicMiddleware(rootEpic);
 
-	const middleWares = [epicMiddleware];
+	const middleWares = [epicMiddleware, navigationMiddleware];
 
 	if (__DEV__) {
 		middleWares.push(logger);

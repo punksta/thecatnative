@@ -12,7 +12,7 @@ const MainScreenNavigator = TabNavigator(
 		ListKitty: {
 			screen: ListKittyScreen
 		},
-			SingleKitty: {
+		SingleKitty: {
 			screen: SingleKittyScreen
 		}
 	},
