@@ -5,17 +5,16 @@ import {createImageProgress} from "react-native-image-progress";
 import KittyLoader from "./KittyLoader";
 import {onlyUpdateForKeys} from "recompose";
 
-import FastImage from "react-native-fast-image";
 import {View, Image, StyleSheet} from "react-native";
 import KittyButtons from "./KittyButtons";
 
 const ImageProgress = createImageProgress(Image);
 
-const KittyImage_ = ({url, style, kittyLoader, buttonsProps}) => {
-	const ImageComponent = kittyLoader ? ImageProgress : Image;
+const KittyImage_ = ({url, style, buttonsProps}) => {
 	return (
 		<View style={style}>
-			<ImageComponent
+			<ImageProgress
+				resizeMethod="resize"
 				source={{uri: url}}
 				resizeMode="contain"
 				style={styles.container}
