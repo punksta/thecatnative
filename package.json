@@ -10,7 +10,7 @@
     "prettier": "prettier --write \"{src,__{tests,mocks}__}/**/*.js\"",
     "flow-check": "flow check --show-all-errors",
     "flow-coverage": "flow coverage",
-    "eslint": "eslint src --fix"
+    "eslint": "eslint src"
   },
   "dependencies": {
     "axios": "^0.18.0",

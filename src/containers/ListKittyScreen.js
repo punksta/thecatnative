@@ -15,10 +15,12 @@ import {connect} from "react-redux";
 import KittyListRecycler from "../components/KittyListRecycler";
 import type {Kitty} from "../api/types";
 import ListSettingsView from "../components/ListSettingsView";
-import type {ListSettings} from "../reducers/kittyList";
+import type {
+	ListSettings,
+	State as ListKittyState
+} from "../reducers/kittyList";
 import type {ScrollEvent} from "../components/KittyListRecycler";
 import type {ScreenProps} from "../navigation/ScreenProps";
-import type {State as ListKittyState} from "../reducers/kittyList";
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(
 	TouchableOpacity
@@ -51,9 +53,9 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 			scrollY: new Animated.Value(this.lastAnimationValue)
 		};
 		this.offSetY = 0;
-		this.state.scrollY.addListener(
-			({value}) => (this.lastAnimationValue = value)
-		);
+		this.state.scrollY.addListener(({value}) => {
+			this.lastAnimationValue = value;
+		});
 	}
 
 	shouldComponentUpdate(newProps) {
@@ -94,14 +96,11 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 			if (current < 50) {
 				next = Math.min(current + diff, 50);
 			}
-		} else {
-			// scroll up
-			if (offsetY < Dimensions.get("window").height / 2) {
-				// hide fab on top of kittyList
-				next = 50;
-			} else if (current > 0) {
-				next = Math.max(current + diff, 0);
-			}
+		} else if (offsetY < Dimensions.get("window").height / 2) {
+			// hide fab on top of kittyList
+			next = 50;
+		} else if (current > 0) {
+			next = Math.max(current + diff, 0);
 		}
 
 		if (Math.floor(next - current) !== 0) {

@@ -36,7 +36,7 @@ export default class KittyLoader extends Component<Props> {
 	render() {
 		const props = this.props;
 
-		if (props.progress && props.progress > 0.8) {
+		if (typeof props.progress === "number" && props.progress > 0.8) {
 			return null;
 		}
 		const spin = this.animationValue.interpolate({

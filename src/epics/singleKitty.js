@@ -21,8 +21,8 @@ export const loadSingleKitty = (
 	const state: () => SingleKittyState = () => store.getState().singleKitty;
 
 	return actions
-		.filter(a => {
-			switch (a.type) {
+		.filter(action => {
+			switch (action.type) {
 				case "SINGLE_KITTY_REQUEST":
 					return true;
 				default:
@@ -30,7 +30,7 @@ export const loadSingleKitty = (
 			}
 		})
 		.mergeMap(a => {
-			const id = a.id;
+			const {id} = a;
 
 			const loadingAction = Observable.of({
 				type: "SINGLE_KITTY_LOADING",
@@ -51,7 +51,7 @@ export const loadSingleKitty = (
 				);
 
 			return Observable.concat(loadingAction, requestObservable).takeUntil(
-				actions.filter(a => a.type === "SINGLE_KITTY_REQUEST")
+				actions.filter(({type}) => type === "SINGLE_KITTY_REQUEST")
 			);
 		});
 };

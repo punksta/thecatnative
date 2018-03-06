@@ -55,9 +55,10 @@ export const loadKittiesToList = (
 
 			return Observable.concat(loadingAction, requestAction).takeUntil(
 				actions.filter(
-					a =>
-						(a.type === "KITTY_LIST_REQUEST" && a.refresh) ||
-						a.type === "KITTY_LIST_SETTINGS_CHANGED"
+					futureAction =>
+						(futureAction.type === "KITTY_LIST_REQUEST" &&
+							futureAction.refresh) ||
+						futureAction.type === "KITTY_LIST_SETTINGS_CHANGED"
 				)
 			);
 		});

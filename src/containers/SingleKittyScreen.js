@@ -25,10 +25,6 @@ type SpecialProps = {
 type Props = ScreenProps & SpecialProps;
 
 class SingleKittyScreen_ extends Component<Props> {
-	constructor(props) {
-		super(props);
-	}
-
 	newKitty = (id?: string) => {
 		this.props.requestKitty(id);
 	};
@@ -36,7 +32,7 @@ class SingleKittyScreen_ extends Component<Props> {
 	shareKitty = () => {
 		const kitty = this.props.singleKittyState.kitty;
 
-		kitty &&
+		if (kitty !== null)
 			Share.share({
 				title: "Checkout nice kitty!",
 				message: kitty.url
@@ -134,12 +130,12 @@ const styles = StyleSheet.create({
 		backgroundColor: "rgba(131, 196, 245, 0.2)"
 		// backgroundColor: "#ffe1e1"
 	},
-	shareKitty: {
-		position: "absolute",
-		end: 0,
-		top: 0,
-		margin: 8
-	},
+	// shareKitty: {
+	// 	position: "absolute",
+	// 	end: 0,
+	// 	top: 0,
+	// 	margin: 8
+	// },
 	kittyStyle: {
 		flex: 1,
 		width: Dimensions.get("window").width,

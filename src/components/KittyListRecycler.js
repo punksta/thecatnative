@@ -45,7 +45,7 @@ class KittyDataProvider extends DataProvider {
 		return index === 0 ? this._header : this._list.get(index - 1);
 	}
 
-	getAllData(): any[] {
+	static getAllData(): any[] {
 		return [];
 	}
 

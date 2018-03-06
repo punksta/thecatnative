@@ -16,21 +16,21 @@ import {fromPromiseIgnoreErrors} from "./rxUtils";
 const urlParse = require("url-parse");
 
 const urlToKittyId: string => ?string = url => {
+	let result;
 	try {
 		const urlParsed = urlParse(url, true);
 		if (urlParsed) {
-			if (urlParsed.hostname !== "thecatapi.com") {
-				return undefined;
+			if (urlParsed.hostname === "thecatapi.com") {
+				const query = urlParsed.query.id;
+				if (typeof query === "string") {
+					result = query;
+				}
 			}
-			const query = urlParsed.query.id;
-			if (typeof query !== "string") {
-				return undefined;
-			}
-			return query;
 		}
 	} catch (e) {
-		return undefined;
+		// ignore
 	}
+	return result;
 };
 
 export const getDeepLinkObservable = () =>

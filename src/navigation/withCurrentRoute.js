@@ -21,15 +21,10 @@ export function withCurrentRoute<
 	getNavigationState: PropsInput => S,
 	mapperFn: (PropsInput, ?Route) => PropsOutput
 ): (React.ComponentType<PropsOutput>) => React.ComponentType<PropsInput> {
-	return Component =>
-		class extends React.Component<PropsInput> {
-			render() {
-				const props: PropsInput = this.props;
-				const currentState: S = getNavigationState(props);
-				const currentRoute: ?Route = getCurrentRoute(currentState);
-
-				const outPutProps: PropsOutput = mapperFn(props, currentRoute);
-				return <Component {...outPutProps} />;
-			}
-		};
+	return Component => (props: PropsInput) => {
+		const currentState: S = getNavigationState(props);
+		const currentRoute: ?Route = getCurrentRoute(currentState);
+		const outPutProps: PropsOutput = mapperFn(props, currentRoute);
+		return <Component {...outPutProps} />;
+	};
 }
