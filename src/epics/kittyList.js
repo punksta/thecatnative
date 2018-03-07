@@ -42,7 +42,7 @@ export const loadKittiesToList = (
 			});
 
 			const requestAction = asObservable(
-				Api.fetchKitties_({count: 40, type: state().settings.type})
+				Api.fetchKitties({count: 40, type: state().settings.type})
 			)
 				.map(data => ({type: "KITTY_LIST_SUCCESS", data, refresh}))
 				.catch(e =>

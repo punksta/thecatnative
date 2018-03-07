@@ -37,9 +37,10 @@ export const loadSingleKitty = (
 				id
 			});
 
-			const request = id
-				? Api.fetchKitty_(id)
-				: Api.fetchRandomKitty_({type: "gif"});
+			const request =
+				id === undefined
+					? Api.fetchKitty(id)
+					: Api.fetchRandomKitty({type: "gif"});
 
 			const requestObservable = asObservable(request)
 				.map(kitty => ({type: "SINGLE_KITTY_LOADING_SUCCESS", kitty}))

@@ -13,11 +13,11 @@ export type PromiseCancel<T> = {
 export type ApiMethod<Args, R> = (args: Args) => PromiseCancel<R>;
 
 export interface Api {
-	+fetchRandomKitty_: ApiMethod<FetchKittyParams, Kitty>;
-	+fetchKitty_: ApiMethod<string, Kitty>;
-	+fetchKitties_: ApiMethod<FetchKittiesParams, Array<Kitty>>;
-	+voteKitty_: ApiMethod<VoteKitty, {}>;
-	+getVotes_: ApiMethod<void, Array<Kitty>>;
+	+fetchRandomKitty: ApiMethod<FetchKittyParams, Kitty>;
+	+fetchKitty: ApiMethod<string, Kitty>;
+	+fetchKitties: ApiMethod<FetchKittiesParams, Array<Kitty>>;
+	+voteKitty: ApiMethod<VoteKitty, {}>;
+	+getVotes: ApiMethod<void, Array<Kitty>>;
 }
 
 export type VoteKitty = {

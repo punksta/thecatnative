@@ -1,10 +1,8 @@
 // @flow
 import * as React from "react";
 import {
-	VirtualizedList,
 	Dimensions,
 	StyleSheet,
-	Image,
 	View,
 	ActivityIndicator,
 	RefreshControl

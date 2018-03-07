@@ -10,20 +10,18 @@ import KittyButtons from "./KittyButtons";
 
 const ImageProgress = createImageProgress(Image);
 
-const KittyImage_ = ({url, style, buttonsProps}) => {
-	return (
-		<View style={style}>
-			<ImageProgress
-				resizeMethod="resize"
-				source={{uri: url}}
-				resizeMode="contain"
-				style={styles.container}
-				indicator={KittyLoader}
-			/>
-			<KittyButtons {...buttonsProps} />
-		</View>
-	);
-};
+const KittyImage_ = ({url, style, buttonsProps}) => (
+	<View style={style}>
+		<ImageProgress
+			resizeMethod="resize"
+			source={{uri: url}}
+			resizeMode="contain"
+			style={styles.container}
+			indicator={KittyLoader}
+		/>
+		<KittyButtons {...buttonsProps} />
+	</View>
+);
 
 const hoc = onlyUpdateForKeys(["url", "style"]);
 

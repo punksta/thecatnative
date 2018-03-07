@@ -15,6 +15,7 @@ import withActiveRoute from "../navigation/withActiveRoute";
 
 import type {State as SingleKittyState} from "../reducers/singleKitty";
 import type {ScreenProps} from "../navigation/ScreenProps";
+import type {Kitty} from "../api/types";
 
 type SpecialProps = {
 	singleKittyState: SingleKittyState,
@@ -30,9 +31,9 @@ class SingleKittyScreen_ extends Component<Props> {
 	};
 
 	shareKitty = () => {
-		const kitty = this.props.singleKittyState.kitty;
+		const kitty: ?Kitty = this.props.singleKittyState.kitty;
 
-		if (kitty !== null)
+		if (kitty)
 			Share.share({
 				title: "Checkout nice kitty!",
 				message: kitty.url

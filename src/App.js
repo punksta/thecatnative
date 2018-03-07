@@ -50,7 +50,7 @@ const AppWithNavigationState = connect(mapStateToProps)(App);
 
 const store = configureStore(navigationMiddleware);
 
-export const Root = props => (
+export const Root = (props: *) => (
 	<View style={{flex: 1}}>
 		<BackgroundImage />
 		<Provider

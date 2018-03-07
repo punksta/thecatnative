@@ -7,8 +7,8 @@ import type {Api, FetchKittiesParams, FetchKittyParams, Kitty} from "./types";
 const url = "http://thecatapi.com";
 
 class ApiIml implements Api {
-	+fetchRandomKitty_ = params => {
-		const r = this.fetchKitties_({...params, count: 1});
+	+fetchRandomKitty = params => {
+		const r = this.fetchKitties({...params, count: 1});
 		return {
 			cancel: r.cancel,
 			promise: r.promise.then(
@@ -17,7 +17,7 @@ class ApiIml implements Api {
 		};
 	};
 
-	+fetchKitty_ = kittyId => {
+	+fetchKitty = kittyId => {
 		const r = requestGet({
 			url: `${url}/api/images/get`,
 			params: {
@@ -35,7 +35,7 @@ class ApiIml implements Api {
 		};
 	};
 
-	fetchKitties_ = params => {
+	fetchKitties = params => {
 		const r = requestGet({
 			url: `${url}/api/images/get`,
 			params: {
@@ -54,7 +54,7 @@ class ApiIml implements Api {
 		};
 	};
 
-	voteKitty_ = params => {
+	voteKitty = params => {
 		const r = requestGet({
 			url: `${url}/api/images/vote`,
 			params: {
@@ -69,7 +69,7 @@ class ApiIml implements Api {
 		};
 	};
 
-	getVotes_ = () => {
+	getVotes = () => {
 		const r = requestGet({
 			url: `${url}/api/images/getvotes`,
 			params: {
