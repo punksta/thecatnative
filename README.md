@@ -1,23 +1,23 @@
 # The http://thecatapi.com/ android  react-native client
 
-The app shows random kitty images and gifs.
+View random kitty images or gifs.
 
 ## Features
  - view cats one by one
- - view list of cats
+ - view cats in list
  - share cat url, view cat from url
- - that's it. What else you need?!
+ - that's it. What else do you need?!
  
 ## How to build
-1. clone repo
+1. clone the repo
 2. put [api key](http://thecatapi.com/api-key-registration.html) to src/config.json
 3. follow react-native build project [instructions](https://facebook.github.io/react-native/docs/running-on-device.html)
-    
-## Get build  
+
+## Android build
 <a href='https://play.google.com/store/apps/details?id=com.punksta.apps.kitties'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 ## Notes
-- ios version is not tested.
+- ios version was not tested.
 
 ## License 
 ```
