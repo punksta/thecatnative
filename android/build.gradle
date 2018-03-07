@@ -12,6 +12,19 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+// overwrite versions of groups
+def dependencyMap = [
+      "com.android.support" : "27.1.0"
+]
+
+// keep versions of next modules
+def ignore = [
+        "com.android.support" : [
+                "multidex",
+                "multidex-instrumentation"
+        ]
+]
+
 
 allprojects {
     repositories {
@@ -23,14 +36,28 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
     }
+
+     configurations.all {
+            resolutionStrategy {
+                eachDependency { DependencyResolveDetails details ->
+
+                    def group = details.requested.group
+                    def name = details.requested.name
+
+                    if (dependencyMap.containsKey(group) && (!ignore.containsKey(group) || !ignore[group].contains(name))) {
+                        details.useVersion dependencyMap[group]
+                    }
+                }
+            }
+        }
 }
 
 subprojects { subproject ->
     afterEvaluate{
         if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
             android {
-                compileSdkVersion 26
-                buildToolsVersion "26.0.3"
+                compileSdkVersion 27
+                buildToolsVersion "27.0.3"
             }
         }
     }
