@@ -52,10 +52,7 @@ const store = configureStore(navigationMiddleware);
 
 export const Root = (props: *) => (
 	<View style={styles.container}>
-		{/*<BackgroundImage />*/}
-		<Provider
-			store={store}
-		>
+		<Provider store={store}>
 			<AppWithNavigationState />
 		</Provider>
 	</View>
@@ -66,6 +63,6 @@ export default Root;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'white'
+		backgroundColor: "white"
 	}
 });
