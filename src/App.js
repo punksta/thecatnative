@@ -12,7 +12,7 @@ import type {
 	NavigationState
 } from "react-navigation";
 import {addNavigationHelpers} from "react-navigation";
-import {View} from "react-native";
+import {View, StyleSheet} from "react-native";
 import {connect, Provider} from "react-redux";
 import BackgroundImage from "./components/BackgroundImage";
 import configureStore from "./configureStore";
@@ -51,12 +51,9 @@ const AppWithNavigationState = connect(mapStateToProps)(App);
 const store = configureStore(navigationMiddleware);
 
 export const Root = (props: *) => (
-	<View style={{flex: 1}}>
-		<BackgroundImage />
+	<View style={styles.container}>
+		{/*<BackgroundImage />*/}
 		<Provider
-			style={{
-				flex: 1
-			}}
 			store={store}
 		>
 			<AppWithNavigationState />
@@ -65,3 +62,10 @@ export const Root = (props: *) => (
 );
 
 export default Root;
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: 'white'
+	}
+});

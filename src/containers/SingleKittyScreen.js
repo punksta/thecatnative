@@ -145,13 +145,14 @@ const styles = StyleSheet.create({
 	nextStyle: {
 		position: "relative",
 		marginTop: "auto",
-		backgroundColor: "#ff408d",
-		borderWidth: 2,
-		borderColor: "#3c67ff",
+		backgroundColor: "#ff3a38",
+		borderWidth: 0.5,
+		borderColor: "#474747",
 		borderRadius: 8,
+		elevation: 4,
 		padding: 8,
-		paddingEnd: 40,
-		paddingStart: 40,
+		paddingEnd: 50,
+		paddingStart: 50,
 		margin: 8
 	},
 	nextTextStyle: {
