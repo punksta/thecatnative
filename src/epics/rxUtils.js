@@ -12,6 +12,7 @@ export const asObservable = <T>(promise: PromiseCancel<T>): Observable<T> =>
 		promise.promise
 			.then(result => {
 				observer.next(result);
+				observer.complete()
 			})
 			.catch(error => {
 				observer.error(error);
