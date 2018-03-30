@@ -209,9 +209,9 @@ export default class KittyList extends React.Component<Props, State> {
 					flexDirection: "row"
 				}}
 			>
-				<KittyLoader />
+				<KittyLoader size={75} />
 				<View style={{flex: 1 / 3}} />
-				<KittyLoader />
+				<KittyLoader size={75} />
 			</View>
 		);
 	};

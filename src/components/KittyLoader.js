@@ -1,14 +1,21 @@
 // @flow
-import React, {Component} from "react";
+import React, {Component, PureComponent} from "react";
 import {Animated, Easing} from "react-native";
 import type {EndCallback} from "react-native/Libraries/Animated/src/animations/Animation";
 
 type Props = {
-	progress?: number
+	progress?: number,
+	size: number
 };
 
-export default class KittyLoader extends Component<Props> {
+export default class KittyLoader extends PureComponent<Props> {
 	animationValue: *;
+
+	static get defaultProps(): Props {
+		return {
+			size: 150
+		};
+	}
 
 	constructor(props: Props) {
 		super(props);
@@ -34,9 +41,9 @@ export default class KittyLoader extends Component<Props> {
 	}
 
 	render() {
-		const props = this.props;
+		const {progress, size} = this.props;
 
-		if (typeof props.progress === "number" && props.progress > 0.8) {
+		if (typeof progress === "number" && progress > 0.8) {
 			return null;
 		}
 		const spin = this.animationValue.interpolate({
@@ -47,8 +54,8 @@ export default class KittyLoader extends Component<Props> {
 		return (
 			<Animated.Image
 				style={{
-					width: 50,
-					height: 50,
+					width: size,
+					height: size,
 					transform: [{rotate: spin}]
 				}}
 				resizeMode="contain"
