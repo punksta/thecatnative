@@ -1,4 +1,4 @@
-# The http://thecatapi.com/ android  react-native client
+# The http://thecatapi.com/ react-native client
 
 View random kitty images or gifs.
 
@@ -18,6 +18,9 @@ View random kitty images or gifs.
 
 ## Notes
 - ios version was not tested.
+
+## Contributors
+- [ruelcedeno](https://github.com/ruelcedeno) provided [new logo](https://github.com/punksta/thecatnative/issues/1)
 
 ## License 
 ```
