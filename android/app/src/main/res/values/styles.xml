@@ -5,4 +5,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <!-- Base application theme. -->
+    <style name="AppTheme.Splash">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
 </resources>

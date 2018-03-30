@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Cats</string>
-    <string name="deepLinkName">View cat</string>
+    <string name="app_name">Kitties</string>
+    <string name="deepLinkName">View kitty</string>
 </resources>
