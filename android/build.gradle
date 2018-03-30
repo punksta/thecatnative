@@ -14,7 +14,8 @@ buildscript {
 }
 // overwrite versions of groups
 def dependencyMap = [
-      "com.android.support" : "27.1.0"
+      "com.android.support" : "27.1.0",
+      "com.facebook.fresco": "1.8.1"
 ]
 
 // keep versions of next modules
