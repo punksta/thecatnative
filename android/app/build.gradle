@@ -91,7 +91,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = true
+def enableProguardInReleaseBuilds = false
 
 import groovy.swing.SwingBuilder
 System.setProperty('java.awt.headless', 'false')
@@ -164,7 +164,7 @@ android {
         }
         release {
             minifyEnabled enableProguardInReleaseBuilds
-            shrinkResources true
+            shrinkResources enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             if ('fromEnv' in signingConfigs.getNames()) {
                signingConfig signingConfigs.fromEnv
