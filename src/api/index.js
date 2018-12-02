@@ -1,5 +1,4 @@
 // @flow
-import {xmlToJson} from "./xml";
 import axios from "axios";
 import config from "../config.json";
 import type {Api, FetchKittiesParams, FetchKittyParams, Kitty} from "./types";
@@ -11,8 +10,8 @@ class ApiIml implements Api {
 		const r = this.fetchKitties({...params, count: 1});
 		return {
 			cancel: r.cancel,
-			promise: r.promise.then(
-				response => (Array.isArray(response) ? response[0] : response)
+			promise: r.promise.then(response =>
+				Array.isArray(response) ? response[0] : response
 			)
 		};
 	};
@@ -21,7 +20,7 @@ class ApiIml implements Api {
 		const r = requestGet({
 			url: `${url}/api/images/get`,
 			params: {
-				format: "xml",
+				format: "json",
 				size: "med",
 				image_id: kittyId
 			}
@@ -29,9 +28,7 @@ class ApiIml implements Api {
 
 		return {
 			cancel: r.cancel,
-			promise: r.promise
-				.then(r => xmlToJson(r.data))
-				.then(r => r.response.data.images.image)
+			promise: r.promise.then(r => r.response.data)
 		};
 	};
 
@@ -39,7 +36,7 @@ class ApiIml implements Api {
 		const r = requestGet({
 			url: `${url}/api/images/get`,
 			params: {
-				format: "xml",
+				format: "json",
 				type: params.type === "gif" ? "gif" : "png,jpg",
 				size: "med",
 				results_per_page: params.count
@@ -48,9 +45,7 @@ class ApiIml implements Api {
 
 		return {
 			cancel: r.cancel,
-			promise: r.promise
-				.then(r => xmlToJson(r.data))
-				.then(r => r.response.data.images.image)
+			promise: r.promise.then(r => r.data)
 		};
 	};
 
@@ -65,7 +60,7 @@ class ApiIml implements Api {
 
 		return {
 			cancel: r.cancel,
-			promise: r.promise.then(r => xmlToJson(r.data))
+			promise: r.promise.then(r => r.data)
 		};
 	};
 
@@ -79,9 +74,7 @@ class ApiIml implements Api {
 
 		return {
 			cancel: r.cancel,
-			promise: r.promise
-				.then(r => xmlToJson(r.data))
-				.then(r => r.response.data.images.image)
+			promise: r.promise.then(r => r.data)
 		};
 	};
 }
@@ -92,6 +85,11 @@ type CancelPromise = {
 	cancel: (reason?: string) => void,
 	promise: Promise<Response>
 };
+
+axios.interceptors.request.use(data => {
+	console.log({data});
+	return data;
+});
 
 const requestGet = <T>(data: {url: string, params: {}}): CancelPromise => {
 	const cancelSource = axios.CancelToken.source();
