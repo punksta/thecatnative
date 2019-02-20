@@ -1,4 +1,6 @@
-#Privacy policy
-- the app does not collect any data.
-- The app does not use any analytics or crash reporting tools.
-- The app uses [thecatapi.com](http://thecatapi.com/) as only third party service.
+Privacy policy 
+- The app is using [https://appcenter.ms](https://appcenter.ms) to collect crash reports and basic analytics.
+- The app is using [thecatapi.com](http://thecatapi.com/) as source of images.
+- The app is not collecting data on it's own servers.
+
+20 feb 2019
