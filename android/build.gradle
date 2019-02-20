@@ -1,9 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+
+    ext {
+        buildToolsVersion = "28.0.3"
+        minSdkVersion = 16
+        compileSdkVersion = 27
+        targetSdkVersion = 27
+        supportLibVersion = "27.1.1"
+    }
+
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.0'
@@ -12,53 +21,36 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-// overwrite versions of groups
-def dependencyMap = [
-      "com.android.support" : "27.1.0"
-]
 
-// keep versions of next modules
-def ignore = [
-        "com.android.support" : [
-                "multidex",
-                "multidex-instrumentation"
-        ]
+def dependencyMap = [
+        "com.android.support" : rootProject.ext.supportLibVersion
 ]
 
 
 allprojects {
     repositories {
-        mavenLocal()
-        jcenter()
         google()
+        jcenter()
+        mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
     }
 
-     configurations.all {
+      configurations.all {
             resolutionStrategy {
+
                 eachDependency { DependencyResolveDetails details ->
 
                     def group = details.requested.group
                     def name = details.requested.name
 
-                    if (dependencyMap.containsKey(group) && (!ignore.containsKey(group) || !ignore[group].contains(name))) {
+                    if (dependencyMap.containsKey(group)) {
                         details.useVersion dependencyMap[group]
                     }
                 }
             }
         }
-}
 
-subprojects { subproject ->
-    afterEvaluate{
-        if((subproject.plugins.hasPlugin('android') || subproject.plugins.hasPlugin('android-library'))) {
-            android {
-                compileSdkVersion 27
-                buildToolsVersion "27.0.3"
-            }
-        }
-    }
 }

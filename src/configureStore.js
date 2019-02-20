@@ -12,6 +12,7 @@ import {AppNavigator} from "./navigation/AppNavigator";
 import {NavigationActions} from "react-navigation";
 import {createNavReducer} from "./reducers/navReducer";
 import type {Middleware} from "redux";
+import categories from "./reducers/categories";
 
 export default (navigationMiddleware: Middleware) => {
 	const epicMiddleware = createEpicMiddleware(rootEpic);
@@ -29,7 +30,8 @@ export default (navigationMiddleware: Middleware) => {
 	const appReducer = combineReducers({
 		nav: createNavReducer(initialState, AppNavigator),
 		kittyList,
-		singleKitty
+		singleKitty,
+		categories
 	});
 
 	return createStore(appReducer, applyMiddleware(...middleWares));

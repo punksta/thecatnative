@@ -1,6 +1,6 @@
 // @flow
 
-import type {Kitty} from "../api/types";
+import type {Category, Kitty} from "../api/types";
 import type {NavigationAction} from "react-navigation";
 import type {ListSettings} from "../reducers/kittyList";
 
@@ -51,8 +51,25 @@ export type SingleKittyActions =
 			error: string
 	  };
 
+export type CategoriesActions =
+	| {
+			type: "CATEGORIES_REQUEST"
+	  }
+	| {
+			type: "CATEGORIES_LOADING"
+	  }
+	| {
+			type: "CATEGORIES_LOADED",
+			categories: Array<Category>
+	  }
+	| {
+			type: "CATEGORIES_FAILURE",
+			error: string
+	  };
+
 export type Action =
 	| NavigationAction
 	| KittyListActions
 	| DeepLinkActions
-	| SingleKittyActions;
+	| SingleKittyActions
+	| CategoriesActions;

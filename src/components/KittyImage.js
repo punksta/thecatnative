@@ -13,7 +13,7 @@ const ImageProgress = createImageProgress(Image);
 const KittyImage_ = ({url, style, buttonsProps}) => (
 	<View style={style}>
 		<ImageProgress
-            progressiveRenderingEnabled
+			progressiveRenderingEnabled
 			resizeMethod="resize"
 			source={{uri: url}}
 			resizeMode="contain"

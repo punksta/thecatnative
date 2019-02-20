@@ -6,6 +6,11 @@ export type Kitty = {
 	url: string
 };
 
+export type Category = {
+	id: number,
+	name: string
+};
+
 export type PromiseCancel<T> = {
 	cancel: (reason?: string) => void,
 	promise: Promise<T>
@@ -18,6 +23,7 @@ export interface Api {
 	+fetchKitties: ApiMethod<FetchKittiesParams, Array<Kitty>>;
 	+voteKitty: ApiMethod<VoteKitty, {}>;
 	+getVotes: ApiMethod<void, Array<Kitty>>;
+	+getCategories: ApiMethod<void, Array<Category>>;
 }
 
 export type VoteKitty = {
@@ -30,5 +36,6 @@ export type FetchKittyParams = {
 };
 
 export type FetchKittiesParams = FetchKittyParams & {
-	count: number
+	count: number,
+	categories?: Array<number>
 };

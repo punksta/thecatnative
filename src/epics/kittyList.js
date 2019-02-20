@@ -12,6 +12,8 @@ import "rxjs/add/operator/catch";
 import "rxjs/add/operator/takeUntil";
 import "rxjs/add/operator/debounceTime";
 
+const PRE_PAGE = 40;
+
 export const loadKittiesToList = (
 	actions: Observable<Action>,
 	store: *
@@ -22,7 +24,7 @@ export const loadKittiesToList = (
 		.filter((a: Action) => {
 			switch (a.type) {
 				case "KITTY_LIST_REQUEST":
-					return a.refresh || state().loadingState === "idle";
+					return a.refresh || state().loadingState === "idle" && state().isLastPage === false;
 				case "Navigation/NAVIGATE":
 					return (
 						a.routeName === "ListKitty" &&
@@ -42,9 +44,18 @@ export const loadKittiesToList = (
 			});
 
 			const requestAction = asObservable(
-				Api.fetchKitties({count: 40, type: state().settings.type})
+				Api.fetchKitties({
+					count: 40,
+					type: state().settings.type,
+					category_ids: state().settings.selectedCategoryIds
+				})
 			)
-				.map(data => ({type: "KITTY_LIST_SUCCESS", data, refresh}))
+				.map(data => ({
+					type: "KITTY_LIST_SUCCESS",
+					data,
+					refresh,
+					isLastPage: data.length < PRE_PAGE
+				}))
 				.catch(e =>
 					Observable.of({
 						type: "KITTY_LIST_FAILURE",

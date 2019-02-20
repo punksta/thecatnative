@@ -16,14 +16,17 @@
     "axios": "^0.18.0",
     "immutable": "^3.8.2",
     "prettier": "^1.11.1",
-    "react": "16.6.1",
-    "react-native": "^0.57.5",
-    "react-native-image-progress": "1.1.0",
+    "react": "16.6.3",
+    "react-native": "^0.58.4",
+    "react-native-image-progress": "1.1.1",
+    "react-native-multiple-select": "^0.4.4",
+    "react-native-popup-dialog": "^0.17.0",
+    "react-native-vector-icons": "^6.3.0",
     "react-navigation": "^1.5.8",
     "react-navigation-redux-helpers": "^1.0.3",
     "react-redux": "^5.0.7",
     "recompose": "^0.26.0",
-    "recyclerlistview": "^1.4.0-beta.5",
+    "recyclerlistview": "^2.0.0-beta.3",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-observable": "^0.18.0",
@@ -31,10 +34,10 @@
     "url-parse": "^1.2.0"
   },
   "devDependencies": {
-    "app-icon": "^0.6.3",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "7.0.0",
+    "app-icon": "^0.8.1",
     "babel-eslint": "^8.2.2",
-    "babel-jest": "21.2.0",
-    "babel-preset-react-native": "^5",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "2.9.0",
@@ -45,10 +48,16 @@
     "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-react-native": "^3.2.1",
     "flow-bin": "^0.65.0",
-    "jest": "21.2.1",
-    "react-test-renderer": "^16.6.1"
+    "jest": "23.6.0",
+    "react-test-renderer": "^16.6.3",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "23.0.1",
+    "metro-react-native-babel-preset": "^0.50.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    }
   }
 }

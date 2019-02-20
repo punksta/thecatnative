@@ -1,9 +1,16 @@
 // @flow
 import axios from "axios";
 import config from "../config.json";
-import type {Api, FetchKittiesParams, FetchKittyParams, Kitty} from "./types";
+import type {
+	Api,
+	ApiMethod,
+	Category,
+	FetchKittiesParams,
+	FetchKittyParams,
+	Kitty
+} from "./types";
 
-const url = "http://thecatapi.com";
+const url = "https://api.thecatapi.com";
 
 class ApiIml implements Api {
 	+fetchRandomKitty = params => {
@@ -18,12 +25,7 @@ class ApiIml implements Api {
 
 	+fetchKitty = kittyId => {
 		const r = requestGet({
-			url: `${url}/api/images/get`,
-			params: {
-				format: "json",
-				size: "med",
-				image_id: kittyId
-			}
+			url: `${url}/v1/images/${kittyId}`
 		});
 
 		return {
@@ -34,12 +36,11 @@ class ApiIml implements Api {
 
 	fetchKitties = params => {
 		const r = requestGet({
-			url: `${url}/api/images/get`,
+			url: `${url}/v1/images/search`,
 			params: {
-				format: "json",
-				type: params.type === "gif" ? "gif" : "png,jpg",
-				size: "med",
-				results_per_page: params.count
+				mime_types: params.type === "gif" ? "gif" : "png,jpg",
+				limit: params.count,
+				category_ids: params.category_ids[0]
 			}
 		});
 
@@ -77,6 +78,18 @@ class ApiIml implements Api {
 			promise: r.promise.then(r => r.data)
 		};
 	};
+
+	+getCategories = () => {
+		const r = requestGet({
+			url: `${url}/v1/categories`,
+			params: {}
+		});
+
+		return {
+			cancel: r.cancel,
+			promise: r.promise.then(r => r.data)
+		};
+	};
 }
 
 type Response = {data: string};
@@ -87,7 +100,7 @@ type CancelPromise = {
 };
 
 axios.interceptors.request.use(data => {
-	console.log({data});
+	console.log(JSON.stringify(data));
 	return data;
 });
 
@@ -97,9 +110,9 @@ const requestGet = <T>(data: {url: string, params: {}}): CancelPromise => {
 	const request = {
 		method: "get",
 		url: data.url,
-		params: {
-			...data.params,
-			api_key: config.api_key
+		params: data.params,
+		headers: {
+			"x-api-key": config.api_key
 		},
 		cancelToken: cancelSource.token
 	};

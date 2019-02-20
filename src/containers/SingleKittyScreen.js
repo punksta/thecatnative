@@ -121,7 +121,10 @@ const mapDispatchToProps = dispatch => ({
 		})
 });
 
-export default connect(mapToState, mapDispatchToProps)(SingleKittyScreen);
+export default connect(
+	mapToState,
+	mapDispatchToProps
+)(SingleKittyScreen);
 
 const styles = StyleSheet.create({
 	container: {

@@ -21,6 +21,7 @@ import type {
 } from "../reducers/kittyList";
 import type {ScrollEvent} from "../components/KittyListRecycler";
 import type {ScreenProps} from "../navigation/ScreenProps";
+import SettingsDialog from "../components/SettingsDialog";
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(
 	TouchableOpacity
@@ -62,6 +63,10 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 		return newProps.isActive;
 	}
 
+	componentDidMount(): void {
+		this.props.loadCategories();
+	}
+
 	shareKitty = (kitty: Kitty) => {
 		Share.share({
 			title: "Checkout nice kitty!",
@@ -69,13 +74,21 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 		});
 	};
 
-	renderHeader = (data: ListSettings) => (
-		<ListSettingsView
-			settings={data}
-			onSettingsChanged={this.props.onSettingsChanged}
-			rootViewStyle={styles.headerStyle}
-		/>
-	);
+	renderHeader = (data: ListSettings) => {
+		return (
+			<ListSettingsView
+				categories={this.props.categories}
+				settings={data}
+				onSettingsChanged={this.props.onSettingsChanged}
+				rootViewStyle={styles.headerStyle}
+				showSettingsDialog={this.showSettingsDialog}
+			/>
+		);
+	};
+
+	showSettingsDialog = () => {
+		this.dialogRef.current && this.dialogRef.current.show();
+	};
 
 	onTopPress = () => {
 		this.refs.kittyList && this.refs.kittyList.scrollToTop(true);
@@ -108,6 +121,8 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 		}
 		this.offSetY = offsetY;
 	};
+
+	dialogRef = React.createRef();
 
 	render() {
 		const {data, loadingState} = this.props.kittyList;
@@ -157,6 +172,13 @@ class ListKittyScreen_ extends React.Component<Props, State> {
 						/>
 					</AnimatedTouchableOpacity>
 				</Animated.View>
+
+				<SettingsDialog
+					settings={this.props.kittyList.settings}
+					ref={this.dialogRef}
+					categories={this.props.categories}
+					onSettingsChanged={this.props.onSettingsChanged}
+				/>
 			</View>
 		);
 	}
@@ -178,17 +200,22 @@ ListKittyScreen.navigationOptions = {
 
 const mapToState = state => ({
 	nav: state.nav,
-	kittyList: state.kittyList
+	kittyList: state.kittyList,
+	categories: state.categories
 });
 
 const dispatchToProps = dispatch => ({
 	onRefresh: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: true}),
 	onLoadMore: () => dispatch({type: "KITTY_LIST_REQUEST", refresh: false}),
 	onSettingsChanged: (settings: ListSettings) =>
-		dispatch({type: "KITTY_LIST_SETTINGS_CHANGED", settings})
+		dispatch({type: "KITTY_LIST_SETTINGS_CHANGED", settings}),
+	loadCategories: () => dispatch({type: "CATEGORIES_REQUEST"})
 });
 
-export default connect(mapToState, dispatchToProps)(ListKittyScreen);
+export default connect(
+	mapToState,
+	dispatchToProps
+)(ListKittyScreen);
 
 const styles = StyleSheet.create({
 	icon: {
