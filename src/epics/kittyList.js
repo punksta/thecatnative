@@ -11,6 +11,7 @@ import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/takeUntil";
 import "rxjs/add/operator/debounceTime";
+import {trackEvent} from "../events";
 
 const PRE_PAGE = 40;
 
@@ -24,7 +25,10 @@ export const loadKittiesToList = (
 		.filter((a: Action) => {
 			switch (a.type) {
 				case "KITTY_LIST_REQUEST":
-					return a.refresh || state().loadingState === "idle" && state().isLastPage === false;
+					return (
+						a.refresh ||
+						(state().loadingState === "idle" && state().isLastPage === false)
+					);
 				case "Navigation/NAVIGATE":
 					return (
 						a.routeName === "ListKitty" &&
@@ -86,3 +90,33 @@ export const refreshListOnSettingsChange = (
 			type: "KITTY_LIST_REQUEST",
 			refresh: true
 		}));
+
+export const sendEvent = (
+	actions: Observable<Action>,
+	store: *
+): Observable<Action> =>
+	actions.mergeMap(a => {
+		switch (a.type) {
+			case "KITTY_LIST_SETTINGS_CHANGED": {
+				const categoryId = a.settings.selectedCategoryIds[0];
+				let data = {type: a.settings.type};
+
+				if (categoryId !== undefined) {
+					data = {
+						...data,
+						categoryId,
+						categoryName: (
+							store
+								.getState()
+								.categories.categories.find(r => r.id === categoryId) || {}
+						).name
+					};
+				}
+				trackEvent("SETTINGS_CHANGED", data);
+				break;
+			}
+			default:
+		}
+
+		return Observable.empty();
+	});

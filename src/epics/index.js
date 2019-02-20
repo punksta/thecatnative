@@ -1,4 +1,8 @@
-import {loadKittiesToList, refreshListOnSettingsChange} from "./kittyList";
+import {
+	loadKittiesToList,
+	refreshListOnSettingsChange,
+	sendEvent
+} from "./kittyList";
 import {combineEpics} from "redux-observable";
 import {loadSingleKitty} from "./singleKitty";
 import {deepLinking} from "./deepLinking";
@@ -9,5 +13,6 @@ export default combineEpics(
 	refreshListOnSettingsChange,
 	loadSingleKitty,
 	deepLinking,
-	loadCategories
+	loadCategories,
+	sendEvent
 );
