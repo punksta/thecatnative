@@ -40,7 +40,8 @@ class ApiIml implements Api {
 			params: {
 				mime_types: params.type === "gif" ? "gif" : "png,jpg",
 				limit: params.count,
-				category_ids: params.category_ids[0]
+				category_ids:
+					"category_ids" in params ? params.category_ids[0] : undefined
 			}
 		});
 
